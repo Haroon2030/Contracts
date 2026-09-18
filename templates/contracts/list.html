@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load humanize contract_tags %}
+{% block title %}سجل العقود{% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b mb-6">
+  <div>
+    <h1 class="text-2xl lg:text-3xl font-black">سجل العقود</h1>
+    <p class="text-sm text-slate-500 mt-1">المصدر الوحيد للحقيقة — الأرشيف المركزي للالتزامات التعاقدية</p>
+  </div>
+  <a href="{% url 'contracts:create' %}" class="px-5 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">+ إنشاء عقد جديد</a>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-slate-500 mb-1">إجمالي العقود</div><div class="text-2xl font-black text-slate-800">{{ kpi_total }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-green-700 mb-1">سارية ونشطة</div><div class="text-2xl font-black text-green-700">{{ kpi_active }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-yellow-700 mb-1">تتطلب إجراء</div><div class="text-2xl font-black text-yellow-600">{{ kpi_action }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-teal-800 mb-1">إجمالي القيمة</div><div class="text-2xl font-black text-teal">{{ kpi_value|floatformat:0|intcomma }}</div></div>
+</div>
+
+<form method="get" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 grid grid-cols-1 md:grid-cols-4 gap-3">
+  <input name="q" value="{{ q }}" placeholder="بحث برقم العقد أو المورد..." class="rounded-xl border-slate-200 text-sm">
+  <select name="status" class="rounded-xl border-slate-200 text-sm">
+    <option value="">كل الحالات</option>
+    {% for key, label in status_choices %}<option value="{{ key }}" {% if selected_status == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+  <select name="type" class="rounded-xl border-slate-200 text-sm">
+    <option value="">كل الأنواع</option>
+    {% for key, label in type_choices %}<option value="{{ key }}" {% if selected_type == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+  <button class="rounded-xl bg-navy-850 text-white font-bold text-sm py-2 bg-slate-800">تصفية</button>
+</form>
+
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+  <div class="overflow-x-auto">
+  <table class="w-full text-sm min-w-[920px]">
+    <thead class="bg-slate-50 text-xs text-slate-500">
+      <tr>
+        <th class="text-right p-3">الرقم</th>
+        <th class="text-right p-3">المورد</th>
+        <th class="text-right p-3">النوع</th>
+        <th class="text-right p-3">القسم</th>
+        <th class="text-right p-3">المدة</th>
+        <th class="text-right p-3">القيمة</th>
+        <th class="text-right p-3">الحالة</th>
+        <th class="text-center p-3 sticky left-0 bg-slate-50 z-10 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.12)]">الإجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in contracts %}
+      <tr class="border-t hover:bg-slate-50 group">
+        <td class="p-3 font-mono font-bold whitespace-nowrap"><a class="text-teal" href="{% url 'contracts:detail' c.pk %}" title="{{ c.contract_number }}">{{ c.pk }}</a></td>
+        <td class="p-3">{{ c.vendor.legal_name }}</td>
+        <td class="p-3">{{ c.get_contract_type_display }}{% if c.get_subtype_display %} / {{ c.get_subtype_display }}{% endif %}</td>
+        <td class="p-3">{{ c.department.name }}</td>
+        <td class="p-3 text-xs">{{ c.start_date }} → {{ c.end_date }}</td>
+        <td class="p-3 font-mono">{{ c.actual_value|floatformat:0|intcomma }}</td>
+        <td class="p-3"><span class="px-2 py-1 rounded-lg text-[11px] font-bold border {{ c.status|status_chip }}">{{ c.get_status_display }}</span></td>
+        <td class="p-3 text-center whitespace-nowrap sticky left-0 bg-white group-hover:bg-slate-50 z-10 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.12)]">
+          <div class="inline-flex items-center justify-center gap-1.5">
+            <form method="get" action="{% url 'contracts:detail' c.pk %}" class="inline">
+              <button type="submit" title="عرض" aria-label="عرض" class="w-9 h-9 inline-flex items-center justify-center rounded-xl bg-teal text-white shadow-sm hover:bg-teal-dark">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12Z"/><circle cx="12" cy="12" r="2.25"/></svg>
+              </button>
+            </form>
+            {% if can_manage_contracts and c.status == 'draft' %}
+            <form method="get" action="{% url 'contracts:edit' c.pk %}" class="inline">
+              <button type="submit" title="تعديل" aria-label="تعديل" class="w-9 h-9 inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:border-teal hover:text-teal">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L8.25 18.402l-4.193 1.04 1.04-4.193 12.765-10.762Z"/></svg>
+              </button>
+            </form>
+            {% endif %}
+            {% if can_manage_contracts and c.status != 'expired' and c.status != 'cancelled' %}
+            <form method="post" action="{% url 'contracts:delete' c.pk %}" class="js-delete-contract inline"
+              data-kind="{% if c.status == 'draft' %}draft{% else %}cancel{% endif %}"
+              data-title="{% if c.status == 'draft' %}حذف المسودة؟{% else %}إلغاء العقد؟{% endif %}"
+              data-body="{% if c.status == 'draft' %}ستُحذف مسودة العقد رقم {{ c.pk }} لمورد {{ c.vendor.legal_name }} بشكل نهائي، ولن يمكن استرجاعها.{% else %}سيُلغى العقد رقم {{ c.pk }} لمورد {{ c.vendor.legal_name }} ويبقى السجل موثّقاً في الأرشيف.{% endif %}"
+              data-confirm="{% if c.status == 'draft' %}نعم، احذف المسودة{% else %}نعم، ألغِ العقد{% endif %}">
+              {% csrf_token %}
+              <button type="button" title="حذف" aria-label="حذف" class="w-9 h-9 inline-flex items-center justify-center rounded-xl bg-rose-600 text-white shadow-sm hover:bg-rose-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-7 0 1 12h8l1-12M10 11v6m4-6v6"/></svg>
+              </button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="p-8 text-center text-slate-500">لا توجد عقود مطابقة.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div id="delete-modal" class="fixed inset-0 z-[80] hidden" aria-hidden="true">
+  <div data-delete-backdrop class="absolute inset-0 bg-slate-950/45 backdrop-blur-[3px]"></div>
+  <div class="relative min-h-full flex items-center justify-center p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-describedby="delete-modal-body" class="w-full max-w-md rounded-3xl bg-white shadow-2xl border border-slate-100 overflow-hidden">
+      <div class="p-6">
+        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+          </svg>
+        </div>
+        <h2 id="delete-modal-title" class="text-xl font-black text-slate-900 mb-2"></h2>
+        <p id="delete-modal-body" class="text-sm leading-7 text-slate-500"></p>
+      </div>
+      <div class="px-6 py-4 bg-slate-50 border-t flex items-center justify-end gap-2">
+        <button type="button" data-delete-cancel class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-700 hover:border-slate-300">إبقاء العقد</button>
+        <button type="button" data-delete-confirm class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold shadow-sm">تأكيد</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var modal = document.getElementById("delete-modal");
+  if (!modal) return;
+  document.body.appendChild(modal);
+  var titleEl = document.getElementById("delete-modal-title");
+  var bodyEl = document.getElementById("delete-modal-body");
+  var confirmBtn = modal.querySelector("[data-delete-confirm]");
+  var pendingForm = null;
+
+  function openModal(form) {
+    pendingForm = form;
+    titleEl.textContent = form.getAttribute("data-title") || "تأكيد الإجراء";
+    bodyEl.textContent = form.getAttribute("data-body") || "";
+    confirmBtn.textContent = form.getAttribute("data-confirm") || "تأكيد";
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    pendingForm = null;
+  }
+
+  document.addEventListener("click", function (event) {
+    var deleteBtn = event.target.closest("form.js-delete-contract button");
+    if (deleteBtn) {
+      event.preventDefault();
+      openModal(deleteBtn.closest("form"));
+      return;
+    }
+    if (event.target.closest("[data-delete-cancel]") || event.target.closest("[data-delete-backdrop]")) {
+      closeModal();
+      return;
+    }
+    if (event.target.closest("[data-delete-confirm]")) {
+      if (!pendingForm) return;
+      var form = pendingForm;
+      pendingForm = null;
+      form.submit();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !modal.classList.contains("hidden")) closeModal();
+  });
+})();
+</script>
+{% endblock %}

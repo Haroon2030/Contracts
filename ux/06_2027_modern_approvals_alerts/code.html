@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نظام إدارة العقود — قائمة الموافقات والتنبيهات المجدولة</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            navy: {
+              950: '#050E18',
+              900: '#071524',
+              850: '#0B1F33',
+              800: '#102A45',
+              700: '#1A3B5D',
+              600: '#234C75',
+            },
+            teal: {
+              DEFAULT: '#0F766E',
+              600: '#0D9488',
+              700: '#0F766E',
+              800: '#115E59',
+              50: '#F0FDFA',
+              100: '#CCFBF1',
+            },
+            gold: {
+              DEFAULT: '#D97706',
+              soft: '#FEF3C7',
+              accent: '#B45309'
+            },
+            border: '#E2E8F0',
+            surface: '#FFFFFF',
+            canvas: '#F8FAFC'
+          },
+          boxShadow: {
+            'card': '0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04)',
+            'card-hover': '0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04)',
+            'subtle': '0 0 0 1px rgba(15, 23, 42, 0.05), 0 2px 8px -2px rgba(15, 23, 42, 0.04)',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.15); }
+    }
+    .pulse-dot {
+      animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="font-sans bg-canvas text-slate-800 min-h-screen antialiased flex flex-row selection:bg-teal selection:text-white">
+<!-- Sidebar (Navy 2027 Design System) -->
+<aside class="w-72 bg-navy-850 text-white flex flex-col justify-between shrink-0 min-h-screen border-l border-navy-800/80 shadow-2xl relative z-20">
+<div>
+<!-- Brand Header -->
+<div class="p-6 border-b border-navy-800/90 relative overflow-hidden">
+<div class="absolute -top-12 -right-12 w-28 h-28 bg-teal/15 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center gap-2 text-xs font-bold text-amber-400 tracking-wide mb-2">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 24 24">
+<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+</svg>
+<span class="tracking-widest">الراشد للتجارة والتجزئة</span>
+</div>
+<div class="text-xl font-black tracking-tight text-white flex items-center justify-between">
+<span>إدارة العقود الذكية</span>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-navy-750 text-slate-300 font-semibold border border-navy-700">2027v</span>
+</div>
+<p class="text-[11px] text-slate-400 mt-1 font-medium leading-relaxed">منظومة الرقابة المالية والحوكمة التعاقدية</p>
+</div>
+<!-- Navigation -->
+<nav class="p-3.5 space-y-1 text-sm font-medium">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-800 transition-all group" href="#">
+<svg class="w-4.5 h-4.5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<rect height="9" rx="1" width="7" x="3" y="3"></rect>
+<rect height="5" rx="1" width="7" x="14" y="3"></rect>
+<rect height="9" rx="1" width="7" x="14" y="12"></rect>
+<rect height="5" rx="1" width="7" x="3" y="16"></rect>
+</svg>
+<span>لوحة التحكم المركزية</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-800 transition-all group" href="#">
+<svg class="w-4.5 h-4.5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+</svg>
+<span>سجل العقود الموحد</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-800 transition-all group" href="#">
+<svg class="w-4.5 h-4.5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M12 8v8M8 12h8"></path>
+</svg>
+<span>إنشاء عقد جديد</span>
+</a>
+<!-- Active Menu Item: Approvals & Alerts -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-teal-700 to-teal-800 text-white font-bold shadow-md shadow-teal-950/30 border border-teal-600/40 relative" href="#">
+<div class="flex items-center gap-3">
+<svg class="w-4.5 h-4.5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M9 11l3 3L22 4"></path>
+<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+</svg>
+<span>طابور الموافقات</span>
+</div>
+<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-white text-teal-800 shadow-sm font-mono">3 معلقة</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-800 transition-all group" href="#">
+<div class="flex items-center gap-3">
+<svg class="w-4.5 h-4.5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+</svg>
+<span>التنبيهات والمخاطر</span>
+</div>
+<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 font-mono">5 نشطة</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-800 transition-all group" href="#">
+<svg class="w-4.5 h-4.5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+<span>المراجعة القانونية</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-800 transition-all group" href="#">
+<svg class="w-4.5 h-4.5 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+<line x1="7" x2="7.01" y1="7" y2="7"></line>
+</svg>
+<span>أسعار الأرفف المعيارية</span>
+</a>
+</nav>
+</div>
+<!-- User Profile & System Status -->
+<div class="p-4 border-t border-navy-800/80 bg-navy-900/80 backdrop-blur-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-700 to-teal-500 text-white flex items-center justify-center font-black text-sm shadow-md ring-2 ring-white/10">
+              نع
+            </div>
+<span class="absolute -bottom-0.5 -left-0.5 w-3 h-3 bg-emerald-400 border-2 border-navy-900 rounded-full"></span>
+</div>
+<div class="truncate">
+<div class="text-sm font-bold text-white truncate">نورة العتيبي</div>
+<div class="text-[11px] text-slate-400 truncate">أخصائي أول إدارة العقود والامتياز</div>
+</div>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-white hover:bg-navy-800 rounded-lg transition" title="تسجيل الخروج">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+<polyline points="16 17 21 12 16 7"></polyline>
+<line x1="21" x2="9" y1="12" y2="12"></line>
+</svg>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Canvas Area -->
+<main class="flex-1 min-h-screen overflow-y-auto bg-slate-50/50">
+<div class="max-w-[1280px] mx-auto p-8 lg:p-10 space-y-8">
+<!-- Top Modern Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200">
+<div>
+<div class="flex items-center gap-2 text-xs font-bold text-teal-700 mb-1">
+<span class="inline-flex items-center justify-center w-5 h-5 rounded-md bg-teal-50 text-teal border border-teal/20">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+</svg>
+</span>
+<span>بوابة التحكم واتخاذ القرارات التعاقدية</span>
+</div>
+<h1 class="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">طابور الموافقات والتنبيهات المجدولة</h1>
+<p class="text-xs lg:text-sm text-slate-500 font-medium mt-1">متابعة الاعتمادات الموجهة بحسب مصفوفة الصلاحيات ورصد مؤشرات المخاطر المجدولة بدقة</p>
+</div>
+<!-- Metric Badges & Policy Matrix Indicator -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white border border-rose-200 shadow-card">
+<span class="w-2.5 h-2.5 rounded-full bg-rose-500 pulse-dot"></span>
+<div>
+<div class="text-[10px] text-slate-500 font-semibold">مؤشر التهديدات</div>
+<div class="text-xs font-bold text-rose-600 font-mono">5 تنبيهات نشطة حرجة</div>
+</div>
+</div>
+<div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white border border-amber-200 shadow-card">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+<div>
+<div class="text-[10px] text-slate-500 font-semibold">طابور التوقيع</div>
+<div class="text-xs font-bold text-amber-700 font-mono">3 عقود تنتظر قرارك</div>
+</div>
+</div>
+<div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-teal-50/80 border border-teal-200/80 text-teal-800 shadow-card">
+<svg class="w-4 h-4 text-teal" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+</svg>
+<div>
+<div class="text-[10px] text-teal-600 font-semibold">حوكمة الإجراءات</div>
+<div class="text-xs font-black">مصفوفة الصلاحيات مطبقة آلياً</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 1: Pending Approvals Table -->
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden transition hover:shadow-card-hover">
+<div class="p-5 lg:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-b from-white to-slate-50/50">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-5 bg-teal-700 rounded-full"></span>
+<h2 class="font-black text-slate-900 text-base lg:text-lg">طابور الموافقات الموجهة إليك (Approval Queue)</h2>
+</div>
+<p class="text-xs text-slate-500 mt-1 font-medium mr-4">عقود تتطلب موافقة مكتب العقود نظراً لبنود التسعير غير المعياري، انحرافات الأرفف، أو تجاوز سقف الـ 15,000 ر.س</p>
+</div>
+<div class="flex items-center gap-2 self-end sm:self-auto">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              نظام التوجيه التلقائي: نشط
+            </span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-right text-xs">
+<thead>
+<tr class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-[11px] uppercase tracking-wider">
+<th class="py-4 px-6">رقم العقد</th>
+<th class="py-4 px-6">المورد والشريك</th>
+<th class="py-4 px-6">النوع التعاقدي</th>
+<th class="py-4 px-6 font-mono">القيمة الصافية</th>
+<th class="py-4 px-6">سبب التحويل بمصفوفة الصلاحيات</th>
+<th class="py-4 px-6">تاريخ الطلب</th>
+<th class="py-4 px-6 text-center">الإجراء المباشر</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+<!-- Item 1: PepsiCo (Shelf deviation) -->
+<tr class="hover:bg-amber-50/30 transition bg-amber-50/15">
+<td class="py-4 px-6">
+<div class="font-mono font-bold text-slate-900 text-sm flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+<span>V-0912-01</span>
+</div>
+<span class="text-[10px] text-slate-400 font-sans">تجديد سنوي</span>
+</td>
+<td class="py-4 px-6">
+<div class="font-bold text-slate-900 text-sm">بيبسيكو العالمية</div>
+<div class="text-[11px] text-slate-500 flex items-center gap-1">
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+<span>قسم المشروبات الغازية والعصائر</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-semibold">
+                    إيجار أرفف وترويج
+                  </span>
+</td>
+<td class="py-4 px-6 font-mono font-bold text-slate-900 text-sm">
+                  14,400 <span class="text-[10px] text-slate-500 font-sans">ر.س</span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200/70 px-2.5 py-1 rounded-lg">
+<svg class="w-3.5 h-3.5 text-rose-600 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path>
+</svg>
+                    انحراف سعر الرف (+20% عن المعياري)
+                  </span>
+</td>
+<td class="py-4 px-6 text-slate-500 font-mono text-[11px]">
+                  اليوم، 09:15 ص
+                </td>
+<td class="py-4 px-6 text-center">
+<div class="flex items-center justify-center gap-2">
+<button class="px-3.5 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition shadow-sm hover:shadow flex items-center gap-1.5">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      اعتماد
+                    </button>
+<button class="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition">
+                      تفاصيل
+                    </button>
+</div>
+</td>
+</tr>
+<!-- Item 2: Al-Watania (High Value > 15k) -->
+<tr class="hover:bg-slate-50/60 transition">
+<td class="py-4 px-6">
+<div class="font-mono font-bold text-slate-900 text-sm flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+<span>V-0442-08</span>
+</div>
+<span class="text-[10px] text-slate-400 font-sans">عقد توريد رئيسي</span>
+</td>
+<td class="py-4 px-6">
+<div class="font-bold text-slate-900 text-sm">الشركة الوطنية للدواجن</div>
+<div class="text-[11px] text-slate-500 flex items-center gap-1">
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+<span>قسم اللحوم المبردة والطازجة</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-semibold">
+                    توريد مباشر (فريش)
+                  </span>
+</td>
+<td class="py-4 px-6 font-mono font-bold text-slate-900 text-sm">
+                  62,000 <span class="text-[10px] text-slate-500 font-sans">ر.س</span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-lg">
+<svg class="w-3.5 h-3.5 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+                    القيمة &gt; 15,000 ر.س + بنود مخصصة
+                  </span>
+</td>
+<td class="py-4 px-6 text-slate-500 font-mono text-[11px]">
+                  أمس، 02:40 م
+                </td>
+<td class="py-4 px-6 text-center">
+<div class="flex items-center justify-center gap-2">
+<button class="px-3.5 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition shadow-sm hover:shadow flex items-center gap-1.5">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      اعتماد
+                    </button>
+<button class="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition">
+                      تفاصيل
+                    </button>
+</div>
+</td>
+</tr>
+<!-- Item 3: Indomie Group -->
+<tr class="hover:bg-slate-50/60 transition">
+<td class="py-4 px-6">
+<div class="font-mono font-bold text-slate-900 text-sm flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+<span>V-0319-01</span>
+</div>
+<span class="text-[10px] text-slate-400 font-sans">اتفاقية عروض</span>
+</td>
+<td class="py-4 px-6">
+<div class="font-bold text-slate-900 text-sm">مجموعة أندومي للأغذية</div>
+<div class="text-[11px] text-slate-500 flex items-center gap-1">
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+<span>المواد الاستهلاكية سريعة الدوران</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-semibold">
+                    تسويق وترويج موسمي
+                  </span>
+</td>
+<td class="py-4 px-6 font-mono font-bold text-slate-900 text-sm">
+                  22,500 <span class="text-[10px] text-slate-500 font-sans">ر.س</span>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg">
+<svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="1" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    قيمة تعاقدية أعلى من 15 ألف
+                  </span>
+</td>
+<td class="py-4 px-6 text-slate-500 font-mono text-[11px]">
+                  27/03/2025
+                </td>
+<td class="py-4 px-6 text-center">
+<div class="flex items-center justify-center gap-2">
+<button class="px-3.5 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs transition shadow-sm hover:shadow flex items-center gap-1.5">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      اعتماد
+                    </button>
+<button class="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition">
+                      تفاصيل
+                    </button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-3.5 bg-slate-50/60 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+<span>يتم تطبيق مصفوفة الاعتماد حسب مستويات الصلاحية المالية رقم (POL-FIN-09)</span>
+<span class="font-mono font-medium">3 طلبات معلقة من أصل 38 طلباً هذا الشهر</span>
+</div>
+</div>
+<!-- Section 2: Scheduled Risk & Expiry Registry (Interactive Alert Cards) -->
+<div class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-5 bg-rose-600 rounded-full"></span>
+<h2 class="font-black text-slate-900 text-base lg:text-lg">سجل التنبيهات المجدولة ومخاطر الانتهاء (Scheduled Risk &amp; Expiry Registry)</h2>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">رصد آلي فوري لفترات الإشعار القانونية، العقود غير الموقعة، والتجاوزات السعرية والتشغيلية</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<button class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-2 shadow-card hover:bg-slate-50 transition">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>فرز: بحسب الأشد خطورة أولاً</span>
+</button>
+</div>
+<button class="p-2 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-800 shadow-card hover:bg-slate-50 transition" title="تحديث السجل">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-3.5">
+<!-- Alert 1: Shelf Deviation (Critical with Red Pulse) -->
+<div class="bg-white rounded-2xl border border-rose-200/90 p-5 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden group">
+<div class="absolute top-0 right-0 bottom-0 w-1.5 bg-rose-600"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mr-1">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center shrink-0 mt-0.5 text-rose-600">
+<span class="w-3 h-3 rounded-full bg-rose-600 pulse-dot"></span>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-black text-slate-900 text-sm lg:text-base">انحراف سعر الرف المعياري (Shelf Price Deviation)</span>
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                      حرج
+                    </span>
+<span class="font-mono text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded">عقد V-0912-01 · بيبسيكو</span>
+</div>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    تسعير الرف المستهدف <strong class="font-mono text-rose-700">1,200 ر.س</strong> مقارنة بالحد الأقصى المعياري المحدد للفرع <strong class="font-mono text-slate-800">1,000 ر.س</strong>. يتطلب تدخل ومراجعة فورية لتفادي تعارض تقارير التدقيق التجاري الداخلي.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+<button class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow-sm hover:shadow flex items-center gap-1.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                  مراجعة الانحراف
+                </button>
+</div>
+</div>
+</div>
+<!-- Alert 2: Approved but Unsigned (Warning - Amber) -->
+<div class="bg-white rounded-2xl border border-amber-200/90 p-5 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden group">
+<div class="absolute top-0 right-0 bottom-0 w-1.5 bg-amber-500"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mr-1">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 mt-0.5 text-amber-600">
+<svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-black text-slate-900 text-sm lg:text-base">معتمد ولم يوقع (Approved but Unsigned &gt; 5 Days)</span>
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                      تحذير
+                    </span>
+<span class="font-mono text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded">عقد V-0881-01 · شركة المراعي</span>
+</div>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    تم اعتماد مسودة العقد نهائياً من اللجنة منذ <strong class="font-mono text-amber-800">6 أيام عمل</strong>، ولم تقم الشركة الموردة برفع النسخة الموقعة إلكترونياً أو إيداع الضمان البنكي المطلوب حتى الآن.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+<button class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition shadow-sm flex items-center gap-1.5">
+<svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                  إرسال إشعار للمورد
+                </button>
+</div>
+</div>
+</div>
+<!-- Alert 3: Auto-Renewal Notice Expiry (Warning - Amber) -->
+<div class="bg-white rounded-2xl border border-amber-200/90 p-5 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden group">
+<div class="absolute top-0 right-0 bottom-0 w-1.5 bg-amber-500"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mr-1">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 mt-0.5 text-amber-600">
+<svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-black text-slate-900 text-sm lg:text-base">آخر يوم لإشعار عدم التجديد التلقائي (Last Auto-Renewal Notice Day)</span>
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                      تحذير
+                    </span>
+<span class="font-mono text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded">عقد V-0411-03 · مياه نوفا</span>
+</div>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    تنتهي اليوم عند الساعة 05:00 م المهلة القانونية المقررة (<strong class="font-semibold">30 يوماً قبل نهاية العقد</strong>). في حال عدم إرسال خطاب خطي رسمي مسبب، سيتجدد العقد تلقائياً لمدة عام كامل بذات الشروط والتخفيضات.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+<button class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition shadow-sm hover:shadow flex items-center gap-1.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  إصدار خطاب إنهاء
+                </button>
+</div>
+</div>
+</div>
+<!-- Alert 4: Expiry < 30 Days (Notice / Neutral follow-up) -->
+<div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden group">
+<div class="absolute top-0 right-0 bottom-0 w-1.5 bg-slate-400"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mr-1">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 mt-0.5 text-slate-600">
+<svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-black text-slate-900 text-sm lg:text-base">قرب انتهاء العقد خلال 30 يوماً (Expiry &lt; 30 Days)</span>
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                      متابعة
+                    </span>
+<span class="font-mono text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded">عقد V-0199-07 · أرز الشعلان</span>
+</div>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    متبقي <strong class="font-mono text-slate-800">28 يوماً</strong> على نهاية فترة العقد التشغيلي السنوي. يوصى ببدء جولة مفاوضات تجديد أسعار التوريد وحصص مساحات العرض للموسم القادم.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+<button class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs transition shadow-sm flex items-center gap-1.5">
+<svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                  بدء التفاوض
+                </button>
+</div>
+</div>
+</div>
+<!-- Alert 5: Expired but Still Active (Critical with Red Pulse) -->
+<div class="bg-white rounded-2xl border border-rose-200/90 p-5 shadow-card hover:shadow-card-hover transition-all relative overflow-hidden group">
+<div class="absolute top-0 right-0 bottom-0 w-1.5 bg-rose-600"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mr-1">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center shrink-0 mt-0.5 text-rose-600">
+<span class="w-3 h-3 rounded-full bg-rose-600 pulse-dot"></span>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-black text-slate-900 text-sm lg:text-base">عقد منتهي وما زال قيد التوريد بالفرع (Expired but Still Active)</span>
+<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                      حرج
+                    </span>
+<span class="font-mono text-xs text-slate-500 font-semibold bg-slate-100 px-2 py-0.5 rounded">عقد V-0012-09 · مخابز الريف</span>
+</div>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                    العقد منتهٍ نظامياً منذ <strong class="font-mono text-rose-700">4 أيام</strong>، وتم رصد استمرار إدخال وتوريد منتجات بالباركود في <strong class="font-semibold text-slate-800">هايبر ماركت الملز</strong> دون وجود ملحق تمديد أو غطاء قانوني سارٍ.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+<button class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition shadow-sm hover:shadow flex items-center gap-1.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" x2="19.07" y1="4.93" y2="19.07"></line></svg>
+                  إيقاف الاستلام فوراً
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

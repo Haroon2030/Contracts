@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load humanize contract_tags %}
+{% block title %}لوحة التحكم التنفيذية{% endblock %}
+{% block content %}
+<div class="mb-8 pb-6 border-b border-slate-200/80 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+  <div>
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-light text-teal-dark text-xs font-bold border border-teal/20 mb-2.5">
+      <span class="w-2 h-2 rounded-full bg-teal"></span>
+      منظومة أسواق الرشيد
+    </div>
+    <h1 class="text-2xl lg:text-3xl font-black tracking-tight">لوحة التحكم التنفيذية</h1>
+    <p class="text-sm text-slate-500 mt-1">رصد مؤشرات الأداء التعاقدي، الانحرافات السعرية، ومخاطر الانتهاء</p>
+  </div>
+      <a href="{% url 'contracts:create' %}" class="px-5 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm shadow-lg shadow-teal/20">+ عقد جديد</a>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 relative overflow-hidden">
+    <div class="absolute top-0 inset-x-0 h-1 bg-rose-500"></div>
+    <div class="text-xs font-bold text-slate-500 mb-2">تنبيهات مفتوحة ومخاطر</div>
+    <div class="text-4xl font-black font-mono">{{ open_alerts_count }}</div>
+    <div class="text-[11px] text-rose-700 mt-3 pt-3 border-t">مطلوب إجراء على التنبيهات المفتوحة</div>
+  </div>
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 relative overflow-hidden">
+    <div class="absolute top-0 inset-x-0 h-1 bg-amber-500"></div>
+    <div class="text-xs font-bold text-slate-500 mb-2">قيمة معرضة خلال 90 يوماً</div>
+    <div class="text-4xl font-black font-mono">{{ exposed_value|floatformat:0|intcomma }}</div>
+    <div class="text-[11px] text-amber-800 mt-3 pt-3 border-t">{{ expiring_90_count }} عقود تنتهي خلال 90 يوماً</div>
+  </div>
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 relative overflow-hidden">
+    <div class="absolute top-0 inset-x-0 h-1 bg-blue-500"></div>
+    <div class="text-xs font-bold text-slate-500 mb-2">قرب الانتهاء (أقل من شهر)</div>
+    <div class="text-4xl font-black font-mono">{{ expiring_count }}</div>
+    <div class="text-[11px] text-slate-600 mt-3 pt-3 border-t">عقود سارية تنتهي خلال 30 يوماً</div>
+  </div>
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 relative overflow-hidden">
+    <div class="absolute top-0 inset-x-0 h-1 bg-teal"></div>
+    <div class="text-xs font-bold text-slate-500 mb-2">عقود نشطة وسارية</div>
+    <div class="text-4xl font-black font-mono">{{ active_count }}</div>
+    <div class="text-[11px] text-teal-dark mt-3 pt-3 border-t">محفظة أسواق الرشيد المفعلة حالياً</div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+  <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <h2 class="font-bold mb-5">توزيع العقود حسب النوع</h2>
+    <div class="space-y-4">
+      {% for label, count in by_type_rows %}
+      <div>
+        <div class="flex justify-between text-xs font-bold mb-1"><span>{{ label }}</span><span>{{ count }}</span></div>
+        <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+          <div class="h-full bg-teal rounded-full" style="width: {{ count|percent_of:type_total }}%"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="font-bold">التنبيهات المفتوحة</h2>
+      <a href="{% url 'contracts:alerts' %}" class="text-xs font-bold text-teal">عرض الكل</a>
+    </div>
+    <div class="space-y-3">
+      {% for alert in open_alerts %}
+      <a href="{% url 'contracts:detail' alert.contract.pk %}" class="block p-3 rounded-xl border border-slate-100 hover:border-teal/30">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="text-sm font-bold">{{ alert.contract.contract_number }} — {{ alert.contract.vendor.legal_name }}</div>
+            <div class="text-xs text-slate-500 mt-0.5">{{ alert.message }}</div>
+          </div>
+          <span class="text-[11px] font-bold px-2 py-1 rounded-lg border {{ alert.severity|severity_chip }}">{{ alert.get_severity_display }}</span>
+        </div>
+      </a>
+      {% empty %}
+      <p class="text-sm text-slate-500">لا توجد تنبيهات مفتوحة.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+  <div class="px-6 py-4 border-b flex items-center justify-between">
+    <h2 class="font-bold">آخر العقود المحدّثة</h2>
+    <a href="{% url 'contracts:list' %}" class="text-xs font-bold text-teal">السجل الكامل</a>
+  </div>
+  <div class="overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-50 text-xs text-slate-500">
+      <tr>
+        <th class="text-right p-3">رقم العقد</th>
+        <th class="text-right p-3">المورد</th>
+        <th class="text-right p-3">النوع</th>
+        <th class="text-right p-3">الحالة</th>
+        <th class="text-right p-3">القيمة</th>
+        <th class="text-center p-3">الإجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in recent %}
+      <tr class="border-t hover:bg-slate-50">
+        <td class="p-3 font-mono font-bold"><a href="{% url 'contracts:detail' c.pk %}" class="text-teal">{{ c.contract_number }}</a></td>
+        <td class="p-3">{{ c.vendor.legal_name }}</td>
+        <td class="p-3">{{ c.get_contract_type_display }}</td>
+        <td class="p-3"><span class="px-2 py-1 rounded-lg text-[11px] font-bold border {{ c.status|status_chip }}">{{ c.get_status_display }}</span></td>
+        <td class="p-3 font-mono">{{ c.actual_value|floatformat:0|intcomma }} ر.س</td>
+        <td class="p-3 text-center whitespace-nowrap">
+          <a href="{{ c.row_action.url }}" class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-xs font-bold transition {% if c.row_action.primary %}bg-teal text-white hover:bg-teal-dark{% else %}border border-slate-200 bg-white text-teal hover:border-teal{% endif %}">{{ c.row_action.label }}</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="p-8 text-center text-slate-500">لا توجد عقود محدّثة.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

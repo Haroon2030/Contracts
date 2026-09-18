@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1 class="text-2xl lg:text-3xl font-black mb-2">{{ title }}</h1>
+<p class="text-sm text-slate-500 mb-6">حفظ العقد يتم كمسودة نظامية. مسار الموافقات يُحسب تلقائياً من القيمة، نوع العقد، وانحراف سعر الرف.</p>
+
+<form method="post" class="space-y-6">
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="rounded-xl bg-rose-50 border border-rose-200 text-rose-800 p-3 text-sm">{{ form.non_field_errors }}</div>{% endif %}
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <h2 class="font-bold mb-4">1) التصنيف والأطراف</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {% for field in form %}
+        {% if field.name in "vendor,contract_type,subtype,internal_classification,department,commercial_owner,purchasing_manager" %}
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<p class="text-xs text-rose-600 mt-1">{{ field.errors.0 }}</p>{% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <h2 class="font-bold mb-4">2) المدة والقيمة ومحددات الأرفف</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {% for field in form %}
+        {% if field.name in "start_date,end_date,notice_period_days,actual_value,shelf_rate,shelf_actual_price,notes" %}
+        <div class="{% if field.name == 'notes' %}lg:col-span-3{% endif %}">
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<p class="text-xs text-rose-600 mt-1">{{ field.errors.0 }}</p>{% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="flex flex-wrap gap-6 mt-5">
+      <label class="flex items-center gap-2 text-sm font-bold">{{ form.auto_renewal }} التجديد التلقائي</label>
+      <label class="flex items-center gap-2 text-sm font-bold">{{ form.has_non_standard_terms }} شروط غير قياسية (تستلزم مراجعة قانونية)</label>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <h2 class="font-bold mb-4">3) أهداف الخصم والشرائح</h2>
+    {{ formset.management_form }}
+    <div class="space-y-3">
+      {% for f in formset %}
+      <div class="grid md:grid-cols-4 gap-3 p-3 rounded-xl border bg-slate-50/50">
+        {% for field in f.visible_fields %}
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">{{ field.label }}</label>
+          {{ field }}
+        </div>
+        {% endfor %}
+        {% for hidden in f.hidden_fields %}{{ hidden }}{% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="sticky bottom-6 bg-white/95 backdrop-blur rounded-2xl border border-slate-200 shadow-sm p-4 flex justify-end gap-3">
+    <a href="{% if contract %}{% url 'contracts:detail' contract.pk %}{% else %}{% url 'contracts:list' %}{% endif %}" class="px-5 py-2.5 rounded-xl border border-slate-200 font-bold text-sm">إلغاء</a>
+    <button class="px-6 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm shadow-sm">حفظ كمسودة</button>
+  </div>
+</form>
+{% endblock %}

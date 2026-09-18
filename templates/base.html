@@ -1,0 +1,184 @@
+{% load contract_tags %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}نظام إدارة العقود{% endblock %} — أسواق الرشيد</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Cairo', 'sans-serif'] },
+          colors: {
+            navy: { 950: '#0f172a', 900: '#111827', 850: '#1e293b', 800: '#334155' },
+            teal: {
+              DEFAULT: '#2563eb',
+              dark: '#1d4ed8',
+              light: '#eff6ff',
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af'
+            },
+            gold: { DEFAULT: '#f59e0b' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --ui-canvas: #f8fafc;
+      --ui-primary: #2563eb;
+      --ui-primary-dark: #1d4ed8;
+      --ui-gold: #f59e0b;
+    }
+    body { background: var(--ui-canvas); }
+    #app-sidebar { width: 280px; transition: width .2s ease; background: linear-gradient(180deg, #0f172a 0%, #111827 55%, #0b1220 100%); }
+    body.sidebar-collapsed #app-sidebar { width: 76px; }
+    body.sidebar-collapsed .sidebar-copy,
+    body.sidebar-collapsed .sidebar-section,
+    body.sidebar-collapsed .sidebar-user-meta,
+    body.sidebar-collapsed .sidebar-logout-label { display: none; }
+    body.sidebar-collapsed #app-sidebar nav a { justify-content: center; padding-left: .4rem; padding-right: .4rem; }
+    body.sidebar-collapsed #app-sidebar .sidebar-badge { position: absolute; top: .15rem; left: .15rem; min-width: 1.1rem; text-align: center; }
+    .sidebar-icon { width: 2rem; height: 2rem; border-radius: .75rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sidebar-icon svg { width: 1.05rem; height: 1.05rem; }
+    #sidebar-toggle svg { transition: transform .2s ease; }
+    body.sidebar-collapsed #sidebar-toggle svg { transform: rotate(180deg); }
+    .ui-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem; box-shadow: 0 1px 2px rgb(15 23 42 / 0.04); }
+  </style>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("cms-sidebar-collapsed") === "1") {
+          document.documentElement.classList.add("sidebar-collapsed-pending");
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="font-sans bg-slate-50 text-slate-800 min-h-screen antialiased flex flex-row">
+<script>
+  if (document.documentElement.classList.contains("sidebar-collapsed-pending")) {
+    document.body.classList.add("sidebar-collapsed");
+  }
+</script>
+<aside id="app-sidebar" class="text-white flex flex-col justify-between shrink-0 min-h-screen sticky top-0 h-screen z-30 border-l border-white/10">
+  <div class="flex flex-col h-full overflow-y-auto overflow-x-hidden">
+    <div class="p-4 border-b border-white/[0.07] flex items-start justify-between gap-2">
+      <div class="sidebar-copy min-w-0">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-gold/10 border border-gold/25 mb-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+          <span class="text-[11px] font-bold text-amber-200">أسواق الرشيد</span>
+        </div>
+        <div class="text-base font-black tracking-tight">إدارة العقود</div>
+        <div class="text-[11px] text-slate-400 mt-1">منظومة التعاقدات الداخلية</div>
+      </div>
+      <button type="button" id="sidebar-toggle" class="shrink-0 w-9 h-9 rounded-xl bg-gold text-slate-950 hover:bg-amber-400 flex items-center justify-center shadow-sm" aria-controls="app-sidebar" title="طي القائمة">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M3 12h18"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="p-3 space-y-1.5 flex-1 text-sm">
+      <div class="sidebar-section text-[10px] font-bold text-slate-400 px-3.5 pt-2 pb-1.5">الرئيسية والتحليلات</div>
+      <a href="{% url 'dashboard:home' %}" title="لوحة التحكم التنفيذية" class="relative flex items-center gap-3 px-3 py-2 rounded-xl {% if nav == 'dashboard' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="sidebar-icon bg-teal/25 text-teal-100"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg></span>
+        <span class="sidebar-copy">لوحة التحكم التنفيذية</span>
+      </a>
+      <a href="{% url 'contracts:list' %}" title="سجل العقود الكامل" class="relative flex items-center justify-between gap-3 px-3 py-2 rounded-xl {% if nav == 'register' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="flex items-center gap-3 min-w-0">
+          <span class="sidebar-icon bg-sky-500/20 text-sky-200"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h8l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path stroke-linecap="round" d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>
+          <span class="sidebar-copy truncate">سجل العقود الكامل</span>
+        </span>
+        {% if nav_contract_count %}<span class="sidebar-badge text-[11px] px-2 py-0.5 rounded-md bg-gold/20 text-amber-200 border border-gold/30 font-extrabold">{{ nav_contract_count }}</span>{% endif %}
+      </a>
+      <a href="{% url 'contracts:create' %}" title="إنشاء عقد جديد" class="relative flex items-center gap-3 px-3 py-2 rounded-xl {% if nav == 'create' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="sidebar-icon bg-emerald-500/20 text-emerald-200"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></span>
+        <span class="sidebar-copy">إنشاء عقد جديد</span>
+      </a>
+      <div class="sidebar-section text-[10px] font-bold text-slate-400 px-3.5 pt-4 pb-1.5">الحوكمة والامتثال</div>
+      <a href="{% url 'contracts:approvals' %}" title="قائمة الموافقات" class="relative flex items-center justify-between gap-3 px-3 py-2 rounded-xl {% if nav == 'approvals' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="flex items-center gap-3 min-w-0">
+          <span class="sidebar-icon bg-amber-500/20 text-amber-200"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg></span>
+          <span class="sidebar-copy truncate">قائمة الموافقات</span>
+        </span>
+        {% if nav_pending_approvals %}<span class="sidebar-badge px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">{{ nav_pending_approvals }}<span class="sidebar-copy"> معلقة</span></span>{% endif %}
+      </a>
+      <a href="{% url 'contracts:legal' %}" title="المراجعة القانونية" class="relative flex items-center justify-between gap-3 px-3 py-2 rounded-xl {% if nav == 'legal' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="flex items-center gap-3 min-w-0">
+          <span class="sidebar-icon bg-indigo-500/20 text-indigo-200"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M5 8.5 12 5l7 3.5M5 8.5 12 12m7-3.5L12 12M5 15.5 12 19l7-3.5"/></svg></span>
+          <span class="sidebar-copy truncate">المراجعة القانونية</span>
+        </span>
+        {% if nav_legal_count %}<span class="sidebar-badge px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-500/20 text-indigo-200">{{ nav_legal_count }}</span>{% endif %}
+      </a>
+      <a href="{% url 'contracts:alerts' %}" title="التنبيهات والمخاطر" class="relative flex items-center justify-between gap-3 px-3 py-2 rounded-xl {% if nav == 'alerts' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="flex items-center gap-3 min-w-0">
+          <span class="sidebar-icon bg-rose-500/20 text-rose-200"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0a3 3 0 1 1-6 0"/></svg></span>
+          <span class="sidebar-copy truncate">التنبيهات والمخاطر</span>
+        </span>
+        {% if nav_critical_alerts %}<span class="sidebar-badge px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30">{{ nav_critical_alerts }}<span class="sidebar-copy"> حرجة</span></span>{% endif %}
+      </a>
+      <a href="{% url 'contracts:shelf_rates' %}" title="أسعار الأرفف المعيارية" class="relative flex items-center gap-3 px-3 py-2 rounded-xl {% if nav == 'rates' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="sidebar-icon bg-amber-400/20 text-amber-200"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="2"/></svg></span>
+        <span class="sidebar-copy">أسعار الأرفف المعيارية</span>
+      </a>
+    </nav>
+    <div class="p-3 border-t border-white/[0.08]">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal to-sky-400 text-white flex items-center justify-center shrink-0" title="{{ request.user.get_full_name|default:request.user.username }}">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.118a7.5 7.5 0 0 1 15 0A17.93 17.93 0 0 1 12 21.75c-2.676 0-5.216-.584-7.5-1.632Z"/>
+          </svg>
+        </div>
+        <div class="sidebar-user-meta min-w-0">
+          <div class="text-sm font-bold truncate">{{ request.user.get_full_name|default:request.user.username }}</div>
+          <div class="text-[11px] text-slate-400 truncate">{% if request.user.profile %}{{ request.user.profile.job_title|default:request.user.profile.get_role_display }}{% endif %}</div>
+        </div>
+      </div>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="w-full text-xs font-bold text-slate-300 hover:text-white border border-white/10 rounded-xl py-2 hover:bg-white/5 flex items-center justify-center gap-2" title="تسجيل الخروج">
+          <span class="sidebar-icon bg-white/10 text-slate-200 !w-7 !h-7"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3"/></svg></span>
+          <span class="sidebar-logout-label">تسجيل الخروج</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</aside>
+<main class="flex-1 min-h-screen p-6 lg:p-8 overflow-y-auto">
+  {% if messages %}
+    <div class="mb-5 space-y-2">
+      {% for message in messages %}
+        <div class="rounded-xl px-4 py-3 text-sm font-semibold border {% if message.tags == 'error' %}bg-rose-50 text-rose-800 border-rose-200{% else %}bg-teal-light text-teal-dark border-teal/20{% endif %}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+<script>
+(function () {
+  var btn = document.getElementById("sidebar-toggle");
+  if (!btn) return;
+  function sync() {
+    var collapsed = document.body.classList.contains("sidebar-collapsed");
+    btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    btn.title = collapsed ? "إظهار القائمة" : "طي القائمة";
+    try { localStorage.setItem("cms-sidebar-collapsed", collapsed ? "1" : "0"); } catch (e) {}
+  }
+  btn.addEventListener("click", function () {
+    document.body.classList.toggle("sidebar-collapsed");
+    sync();
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نظام إدارة العقود 2027 — سجل العقود</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          colors: {
+            navy: {
+              950: '#040d17',
+              900: '#071626',
+              800: '#0B1F33',
+              700: '#14314f',
+              600: '#1e436a',
+            },
+            teal: {
+              DEFAULT: '#0D6E60',
+              dark: '#085046',
+              light: '#E7F7F4',
+              surface: '#F0FAF8',
+              accent: '#10B981',
+            },
+            gold: {
+              DEFAULT: '#C9A227',
+              light: '#FEF9E7',
+              muted: '#B38B1B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="font-sans bg-[#FBFBFC] text-slate-800 min-h-screen antialiased flex flex-row selection:bg-teal selection:text-white">
+<!-- Sidebar (272px Dark Corporate Navy - 2027 Edition) -->
+<aside class="w-[280px] bg-navy-800 text-white flex flex-col justify-between shrink-0 min-h-screen border-l border-navy-700/50 shadow-2xl relative z-20 select-none">
+<div>
+<!-- Brand Header -->
+<div class="px-6 py-6 border-b border-navy-700/60 bg-gradient-to-b from-navy-900/50 to-transparent">
+<div class="text-[11px] font-bold text-gold tracking-widest mb-1.5 flex items-center gap-2">
+<svg class="w-3.5 h-3.5 text-gold animate-pulse" fill="currentColor" viewbox="0 0 24 24">
+<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+</svg>
+<span class="uppercase tracking-wider">مجموعة الراشد القابضة</span>
+</div>
+<div class="text-xl font-black text-white tracking-tight flex items-center gap-2">
+<span>إدارة العقود</span>
+<span class="text-[10px] font-bold bg-teal/25 text-teal-300 border border-teal-500/40 px-2 py-0.5 rounded-full">v2.7</span>
+</div>
+<div class="text-[11px] text-slate-400 mt-1 font-medium flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>
+          قطاع التجزئة والأسواق المركزية
+        </div>
+</div>
+<!-- Navigation Links -->
+<nav class="p-4 space-y-1.5">
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-700/60 font-semibold text-xs tracking-wide transition group" href="#">
+<svg class="w-5 h-5 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<rect height="9" rx="1.5" width="7" x="3" y="3"></rect>
+<rect height="5" rx="1.5" width="7" x="14" y="3"></rect>
+<rect height="9" rx="1.5" width="7" x="14" y="12"></rect>
+<rect height="5" rx="1.5" width="7" x="3" y="16"></rect>
+</svg>
+<span>لوحة التحكم الرئيسية</span>
+</a>
+<!-- Active Link: Contract Register -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-teal text-white font-bold text-xs shadow-lg shadow-teal/30 ring-1 ring-white/10 transition" href="#">
+<div class="flex items-center gap-3.5">
+<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>سجل العقود الشامل</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+</a>
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-700/60 font-semibold text-xs transition group" href="#">
+<svg class="w-5 h-5 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M12 8v8M8 12h8" stroke-linecap="round"></path>
+</svg>
+<span>إنشاء عقد جديد</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-700/60 font-semibold text-xs transition group" href="#">
+<div class="flex items-center gap-3.5">
+<svg class="w-5 h-5 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="m9 12.75 2.25 2.25 5.25-5.25m-9.75 9.75h14.25a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>قائمة الموافقات</span>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30">3 معلقة</span>
+</a>
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-700/60 font-semibold text-xs transition group" href="#">
+<svg class="w-5 h-5 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 3v18m0 0l-4-4m4 4l4-4M3 9l9-6 9 6M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>المراجعة والتدقيق القانوني</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-700/60 font-semibold text-xs transition group" href="#">
+<div class="flex items-center gap-3.5">
+<svg class="w-5 h-5 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>التنبيهات والمخاطر</span>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30">5 حرجة</span>
+</a>
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-navy-700/60 font-semibold text-xs transition group" href="#">
+<svg class="w-5 h-5 text-slate-400 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M6 6h.008v.008H6V6Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>أسعار الأرفف المعيارية</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Footer -->
+<div class="p-4 border-t border-navy-700/70 bg-navy-950/70 backdrop-blur">
+<div class="flex items-center gap-3 p-2 rounded-xl bg-navy-800/80 border border-navy-700/60">
+<div class="relative">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-dark to-teal text-white flex items-center justify-center font-bold text-sm shadow-md border border-teal/40">
+            نع
+          </div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-navy-900"></span>
+</div>
+<div class="truncate flex-1">
+<div class="text-xs font-bold text-white flex items-center justify-between">
+<span class="truncate">نورة العتيبي</span>
+<span class="text-[10px] text-teal-300 bg-teal/20 px-1.5 py-0.2 rounded font-mono">مدير</span>
+</div>
+<div class="text-[11px] text-slate-400 truncate">قسم العقود والامتياز التجاري</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Viewport -->
+<main class="flex-1 min-h-screen p-8 lg:p-10 overflow-y-auto bg-gradient-to-b from-white via-[#FBFBFC] to-slate-50">
+<!-- Top Executive Header -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200/80 mb-6">
+<div>
+<div class="flex items-center gap-3 flex-wrap">
+<h1 class="text-2xl lg:text-3xl font-black text-navy-800 tracking-tight">سجل العقود</h1>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-light text-teal border border-teal/30 shadow-xs">
+<span class="w-2 h-2 rounded-full bg-teal animate-pulse"></span>
+            المصدر الوحيد للحقيقة (Single Source of Truth)
+          </span>
+<span class="text-xs text-slate-500 font-semibold bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+            الربع الأول 2027
+          </span>
+</div>
+<p class="text-xs lg:text-sm text-slate-500 font-medium mt-1.5">الأرشيف المركزي الموحد لإدارة ومتابعة الالتزامات التعاقدية للموردين والمساحات البيعية</p>
+</div>
+<div class="flex items-center gap-3 self-start md:self-auto">
+<button class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-sm hover:border-slate-300 transition flex items-center gap-2">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>استيراد عقود</span>
+</button>
+<button class="px-5 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-xs shadow-md shadow-teal/25 hover:shadow-lg hover:shadow-teal/30 active:scale-95 transition flex items-center gap-2">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>إنشاء عقد جديد</span>
+</button>
+</div>
+</div>
+<!-- Mini KPI Summary Pills (Top Metrics 2027) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+<div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between hover:border-slate-300 transition">
+<div>
+<div class="text-[11px] font-bold text-slate-500 mb-1">إجمالي العقود المسجلة</div>
+<div class="text-2xl font-black text-navy-900 tabular-nums">41 <span class="text-xs font-semibold text-slate-500">عقداً</span></div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-lg">
+          📄
+        </div>
+</div>
+<div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between hover:border-emerald-200 transition">
+<div>
+<div class="text-[11px] font-bold text-emerald-700 mb-1">عقود سارية ونشطة</div>
+<div class="text-2xl font-black text-emerald-700 tabular-nums">24 <span class="text-xs font-semibold text-emerald-600">(58%)</span></div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center font-bold text-lg">
+          ✓
+        </div>
+</div>
+<div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between hover:border-amber-200 transition">
+<div>
+<div class="text-[11px] font-bold text-amber-700 mb-1">تتطلب إجراء سريع</div>
+<div class="text-2xl font-black text-amber-600 tabular-nums">5 <span class="text-xs font-semibold text-amber-600">عقود</span></div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center font-bold text-lg">
+          ⚠️
+        </div>
+</div>
+<div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between hover:border-teal/30 transition">
+<div>
+<div class="text-[11px] font-bold text-teal-800 mb-1">إجمالي القيمة التعاقدية</div>
+<div class="text-2xl font-black text-teal tabular-nums">485,000 <span class="text-xs font-bold text-teal/80">ر.س</span></div>
+</div>
+<div class="w-10 h-10 rounded-xl bg-teal-surface text-teal border border-teal/20 flex items-center justify-center font-bold text-base">
+          ﷼
+        </div>
+</div>
+</div>
+<!-- Advanced Filter & Search Toolbar (2027 Standard) -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-4 mb-6 shadow-sm flex flex-wrap items-center justify-between gap-4">
+<!-- Search Input -->
+<div class="flex items-center gap-3 flex-1 min-w-[300px]">
+<div class="relative w-full">
+<input class="w-full pr-10 pl-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal focus:bg-white font-medium transition" placeholder="بحث برقم العقد (V-XXXX)، اسم المورد، أو الفئة التجارية..." type="text"/>
+<span class="absolute right-3.5 top-2.5 text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="8"></circle>
+<path d="m21 21-4.35-4.35" stroke-linecap="round"></path>
+</svg>
+</span>
+</div>
+</div>
+<!-- Filters & Actions -->
+<div class="flex items-center flex-wrap gap-2.5">
+<!-- Status Filter -->
+<select class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs font-bold text-slate-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 transition cursor-pointer">
+<option>كافة الحالات (الكل)</option>
+<option>نشط</option>
+<option>بانتظار الموافقة</option>
+<option>بانتظار التوقيع</option>
+<option>تحت المراجعة</option>
+<option>مسودة</option>
+<option>منتهي</option>
+</select>
+<!-- Category Filter -->
+<select class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-xs font-bold text-slate-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 transition cursor-pointer">
+<option>كافة أنواع العقود</option>
+<option>توريد (فريش / غذائي / استهلاكي)</option>
+<option>إيجار أرفف ومساحات بيعية</option>
+<option>تسويق وترويج موسمي</option>
+<option>خدمات لوجستية وتبريد</option>
+</select>
+<!-- Columns Toggle / Custom View -->
+<button class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>تخصيص العرض</span>
+</button>
+<!-- Export Excel -->
+<button class="px-4 py-2.5 rounded-xl border border-emerald-200 bg-emerald-50/70 hover:bg-emerald-100/70 text-xs font-bold text-emerald-800 flex items-center gap-2 transition shadow-xs">
+<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>تصدير Excel</span>
+</button>
+</div>
+</div>
+<!-- Next-Gen Data Table Container -->
+<div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-right text-xs">
+<thead>
+<tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[11px]">
+<th class="py-4 px-6">رقم العقد</th>
+<th class="py-4 px-6">المورد والشركة</th>
+<th class="py-4 px-6">نوع العقد</th>
+<th class="py-4 px-6 font-mono">القيمة التعاقدية</th>
+<th class="py-4 px-6">الأيام المتبقية</th>
+<th class="py-4 px-6">شروط التجديد</th>
+<th class="py-4 px-6">الحالة</th>
+<th class="py-4 px-6 text-center">الإجراءات</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-medium text-slate-800">
+<!-- Row 1: Active -->
+<tr class="hover:bg-teal-surface/40 transition group">
+<td class="py-4.5 px-6">
+<div class="font-mono font-bold text-navy-900 text-sm flex items-center gap-1.5">
+<span>V-2201-02</span>
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+</div>
+<div class="text-[11px] text-slate-500 font-medium mt-0.5">فئة A1 · هايبر الرياض التخصصي</div>
+</td>
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200/80 text-emerald-800 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                    ند
+                  </div>
+<div>
+<div class="font-bold text-slate-900 text-sm group-hover:text-teal transition">شركة نادك للتنمية الزراعية</div>
+<div class="text-[11px] text-slate-500">الألبان، العصائر والأغذية الطازجة</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6">
+<span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200/60 font-bold text-[11px] inline-flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                  توريد (فريش)
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-bold text-navy-900 text-sm tabular-nums">48,000</span>
+<span class="text-[11px] text-slate-500 font-semibold mr-1">ر.س</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 font-mono font-bold text-xs border border-emerald-200/60">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  245 يوماً
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="text-xs text-slate-600 font-medium">تلقائي (إشعار 60 يوم)</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  نشط وموثق
+                </span>
+</td>
+<td class="py-4.5 px-6 text-center">
+<button class="px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-teal hover:text-teal font-bold text-xs shadow-xs transition inline-flex items-center gap-1">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>استعراض</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Pending Approval -->
+<tr class="hover:bg-amber-50/40 transition group bg-amber-50/20">
+<td class="py-4.5 px-6">
+<div class="font-mono font-bold text-navy-900 text-sm flex items-center gap-1.5">
+<span>V-0912-01</span>
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+</div>
+<div class="text-[10px] text-amber-700 font-extrabold mt-0.5 inline-flex items-center gap-1">
+<span>⚠️</span> انحراف سعر الرف (-12%)
+                </div>
+</td>
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200/80 text-blue-800 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                    بيب
+                  </div>
+<div>
+<div class="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition">بيبسيكو العالمية (المشروبات)</div>
+<div class="text-[11px] text-slate-500">مساحة عرض نهاية الممر (End-Cap)</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6">
+<span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-200/60 font-bold text-[11px] inline-flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-amber-500"></span>
+                  إيجار أرفف
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-bold text-navy-900 text-sm tabular-nums">14,400</span>
+<span class="text-[11px] text-slate-500 font-semibold mr-1">ر.س</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 font-mono font-bold text-xs border border-amber-200">
+                  88 يوماً
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="text-xs text-slate-600 font-medium">إشعار 30 يوم مسبق</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300 shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+                  بانتظار الموافقة
+                </span>
+</td>
+<td class="py-4.5 px-6 text-center">
+<button class="px-3.5 py-1.5 rounded-lg bg-teal text-white font-bold text-xs hover:bg-teal-dark shadow-sm hover:shadow-teal/20 transition inline-flex items-center gap-1">
+<span>اتخاذ إجراء</span>
+<svg class="w-3.5 h-3.5 rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</td>
+</tr>
+<!-- Row 3: Pending Signature -->
+<tr class="hover:bg-slate-50/60 transition group">
+<td class="py-4.5 px-6">
+<div class="font-mono font-bold text-navy-900 text-sm flex items-center gap-1.5">
+<span>V-0881-01</span>
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+</div>
+<div class="text-[11px] text-slate-500 font-medium mt-0.5">تم اعتماد البنود القانونية</div>
+</td>
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-teal-light border border-teal/20 text-teal-dark flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                    مر
+                  </div>
+<div>
+<div class="font-bold text-slate-900 text-sm group-hover:text-teal transition">شركة المراعي المحدودة</div>
+<div class="text-[11px] text-slate-500">منتجات المخبوزات والجبن المطبوخ</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6">
+<span class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-700 border border-sky-200/60 font-bold text-[11px] inline-flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-sky-500"></span>
+                  توريد (غذائي)
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-bold text-navy-900 text-sm tabular-nums">75,000</span>
+<span class="text-[11px] text-slate-500 font-semibold mr-1">ر.س</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-rose-50 text-rose-700 font-mono font-bold text-xs border border-rose-200">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                  18 يوماً
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="text-xs text-rose-600 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-100">آخر يوم إشعار تجديد!</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-orange-50 text-orange-700 border border-orange-200">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                  بانتظار التوقيع
+                </span>
+</td>
+<td class="py-4.5 px-6 text-center">
+<button class="px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-orange-400 hover:text-orange-600 font-bold text-xs shadow-xs transition inline-flex items-center gap-1">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>إرسال تذكير</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Under Review -->
+<tr class="hover:bg-slate-50/60 transition group">
+<td class="py-4.5 px-6">
+<div class="font-mono font-bold text-navy-900 text-sm flex items-center gap-1.5">
+<span>V-0550-04</span>
+<span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+</div>
+<div class="text-[11px] text-slate-500 font-medium mt-0.5">تعديل بنود الضمانات والتأمين</div>
+</td>
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200/80 text-indigo-800 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                    مت
+                  </div>
+<div>
+<div class="font-bold text-slate-900 text-sm group-hover:text-indigo-700 transition">المتحدة للخدمات اللوجستية والتبريد</div>
+<div class="text-[11px] text-slate-500">نقل وتفريغ البضائع المبردة لفروع الشرقية</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6">
+<span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200/60 font-bold text-[11px] inline-flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-indigo-500"></span>
+                  خدمات لوجستية
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-bold text-navy-900 text-sm tabular-nums">32,000</span>
+<span class="text-[11px] text-slate-500 font-semibold mr-1">ر.س</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-mono text-slate-400 text-xs">--</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="text-xs text-slate-600 font-medium">عقد سنوي محدد المدة</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                  تحت المراجعة القانونية
+                </span>
+</td>
+<td class="py-4.5 px-6 text-center">
+<button class="px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-purple-400 hover:text-purple-700 font-bold text-xs shadow-xs transition inline-flex items-center gap-1">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>الملاحظات</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Draft -->
+<tr class="hover:bg-slate-50/60 transition group">
+<td class="py-4.5 px-6">
+<div class="font-mono font-bold text-slate-500 text-sm flex items-center gap-1.5">
+<span>V-0119-03</span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+</div>
+<div class="text-[11px] text-slate-400 font-medium mt-0.5">مسودة أولية غير مكتملة</div>
+</td>
+<td class="py-4.5 px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 flex items-center justify-center font-black text-xs shrink-0 shadow-xs">
+                    صد
+                  </div>
+<div>
+<div class="font-bold text-slate-700 text-sm group-hover:text-slate-900 transition">وكالة الصدى للدعاية الرقمية</div>
+<div class="text-[11px] text-slate-400">حملة عروض موسم شهر رمضان 1448هـ</div>
+</div>
+</div>
+</td>
+<td class="py-4.5 px-6">
+<span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 font-bold text-[11px] inline-flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-slate-400"></span>
+                  تسويق وترويج
+                </span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-bold text-slate-700 text-sm tabular-nums">18,500</span>
+<span class="text-[11px] text-slate-400 font-semibold mr-1">ر.س</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="font-mono text-slate-400 text-xs">--</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="text-xs text-slate-500 font-medium">حملة موسمية محددة</span>
+</td>
+<td class="py-4.5 px-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                  مسودة
+                </span>
+</td>
+<td class="py-4.5 px-6 text-center">
+<button class="px-3.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-teal hover:text-teal font-bold text-xs shadow-xs transition inline-flex items-center gap-1">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>استكمال</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Modern Pagination (Next-Gen 2027) -->
+<div class="px-6 py-4 border-t border-slate-200/80 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+<div class="text-slate-500 font-medium">
+          عرض <strong class="text-navy-900 font-bold tabular-nums">1 - 5</strong> من إجمالي <strong class="text-navy-900 font-bold tabular-nums">41</strong> عقد مسجل في النظام
+        </div>
+<div class="flex items-center gap-1.5">
+<button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed font-medium shadow-xs transition" disabled="">
+            السابق
+          </button>
+<button class="w-8 h-8 rounded-lg bg-teal text-white font-bold text-xs shadow-sm flex items-center justify-center">
+            1
+          </button>
+<button class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs shadow-xs flex items-center justify-center transition">
+            2
+          </button>
+<button class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs shadow-xs flex items-center justify-center transition">
+            3
+          </button>
+<span class="px-1 text-slate-400">...</span>
+<button class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs shadow-xs flex items-center justify-center transition">
+            9
+          </button>
+<button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-medium shadow-xs transition">
+            التالي
+          </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

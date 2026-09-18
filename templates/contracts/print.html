@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="{% if request.GET.embed %}embed{% endif %}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>عقد {{ contract.contract_number }} — {{ organization.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111;
+      --muted: #444;
+      --line: #1a1a1a;
+      --green: #0d4f3c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #d9d4c8;
+      font-family: "Amiri", "Traditional Arabic", "Times New Roman", serif;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      background: #0b1f33;
+    }
+    .toolbar a, .toolbar button {
+      font-family: "Cairo", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .toolbar .print { background: #0f6b5c; color: #fff; }
+    .toolbar .back { background: #fff; color: #0b1f33; }
+    .sheet {
+      width: 210mm;
+      margin: 12px auto 24px;
+      background: #fff;
+      padding: 10mm 12mm 10mm;
+      box-shadow: 0 8px 28px rgba(0,0,0,.18);
+    }
+    .head {
+      text-align: center;
+      border-top: 3px solid var(--green);
+      border-bottom: 1px solid var(--line);
+      padding: 4px 0 8px;
+      margin-bottom: 8px;
+    }
+    .head .country { font-size: 12px; color: var(--green); font-weight: 700; letter-spacing: .4px; }
+    .head h1 { font-size: 18px; margin: 0; }
+    .head .unit { font-size: 12px; color: var(--muted); }
+    .bismillah { text-align: center; font-size: 15px; margin: 4px 0 2px; }
+    .doc-title { text-align: center; font-size: 16px; font-weight: 700; margin: 0 0 8px; text-decoration: underline; }
+    table.meta, table.parties, table.sign, table.data {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 8px;
+    }
+    table.meta td, table.parties td, table.sign td, table.data th, table.data td {
+      border: 1px solid var(--line);
+      padding: 4px 8px;
+      vertical-align: top;
+    }
+    table.meta td.label, table.data th {
+      width: 28%;
+      background: #f4f4f4;
+      font-weight: 700;
+    }
+    h2 {
+      font-size: 13.5px;
+      margin: 8px 0 4px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1px;
+    }
+    p { margin: 0 0 4px; text-align: justify; }
+    ol.terms { padding-right: 20px; margin: 0 0 6px; }
+    ol.terms li { margin-bottom: 2px; }
+    .sign td { height: 78px; width: 50%; }
+    .sign .role { font-weight: 700; margin-bottom: 4px; }
+    .sign .line { margin-top: 14px; font-size: 12px; color: var(--muted); }
+    .footer {
+      margin-top: 8px;
+      border-top: 1px solid var(--line);
+      padding-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .draft-mark {
+      text-align: center;
+      color: #8a1c1c;
+      border: 1px solid #8a1c1c;
+      padding: 4px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    html.embed body { background: #fff; }
+    html.embed .toolbar { display: none !important; }
+    html.embed .sheet { width: auto; margin: 0; padding: 10mm 12mm; box-shadow: none; }
+    @media print {
+      html, body { background: #fff; height: auto; }
+      .toolbar { display: none !important; }
+      .sheet { width: auto; margin: 0; padding: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <button class="print" type="button" onclick="window.print()">طباعة العقد</button>
+    <a class="back" href="{% url 'contracts:detail' contract.pk %}">العودة إلى العقد</a>
+  </div>
+
+  <article class="sheet">
+    <header class="head">
+      <div class="country">{{ organization.country }}</div>
+      <h1>{{ organization.legal_name }}</h1>
+      <div class="unit">{{ organization.unit }}</div>
+    </header>
+
+    {% if contract.status == 'draft' %}
+    <div class="draft-mark">مسودة — غير معتمدة للتوقيع النهائي</div>
+    {% endif %}
+
+    <div class="bismillah">بسم الله الرحمن الرحيم</div>
+    <h1 class="doc-title">عقد {{ contract.get_contract_type_display }}{% if contract.get_subtype_display %} ({{ contract.get_subtype_display }}){% endif %}</h1>
+
+    <table class="meta">
+      <tr>
+        <td class="label">رقم العقد</td>
+        <td>{{ contract.contract_number }}</td>
+        <td class="label">تاريخ التحرير</td>
+        <td>{{ issued_at|date:"j F Y" }}م</td>
+      </tr>
+      <tr>
+        <td class="label">القسم المختص</td>
+        <td>{{ contract.department }}</td>
+        <td class="label">حالة النسخة النظامية</td>
+        <td>{{ contract.get_status_display }}</td>
+      </tr>
+    </table>
+
+    <h2>المادة الأولى: أطراف العقد</h2>
+    <p>تم الاتفاق بين كل من:</p>
+    <table class="parties">
+      <tr>
+        <td class="label">الطرف الأول</td>
+        <td>
+          <strong>{{ organization.legal_name }}</strong>، ويشار إليه فيما بعد بـ «الطرف الأول».<br>
+          الجهة المختصة: {{ organization.unit }} — {{ contract.department }}.<br>
+          الممثل النظامي / مسؤول العقد: {{ contract.commercial_owner.get_full_name|default:contract.commercial_owner.username }}.
+          {% if contract.purchasing_manager %}<br>مدير المشتريات: {{ contract.purchasing_manager.get_full_name|default:contract.purchasing_manager.username }}.{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">الطرف الثاني</td>
+        <td>
+          <strong>{{ contract.vendor.legal_name }}</strong>
+          {% if contract.vendor.trade_name %} ({{ contract.vendor.trade_name }}){% endif %}،
+          ويشار إليه فيما بعد بـ «الطرف الثاني».<br>
+          رقم المورد: {{ contract.vendor.vendor_number }}.
+          {% if contract.vendor.cr_number %}<br>السجل التجاري: {{ contract.vendor.cr_number }}.{% endif %}
+          {% if contract.vendor.contact_name %}<br>جهة الاتصال: {{ contract.vendor.contact_name }}.{% endif %}
+        </td>
+      </tr>
+    </table>
+
+    <h2>المادة الثانية: موضوع العقد</h2>
+    <p>
+      يلتزم الطرف الثاني بأن يقدم للطرف الأول أعمال
+      <strong>{{ contract.get_contract_type_display }}</strong>
+      {% if contract.get_subtype_display %}ضمن فئة <strong>{{ contract.get_subtype_display }}</strong>{% endif %}
+      {% if contract.internal_classification %}، وذلك في شأن: {{ contract.internal_classification }}{% endif %}.
+    </p>
+    {% if contract.notes %}<p>ملاحظات تجارية مرفقة بهذا العقد: {{ contract.notes }}</p>{% endif %}
+
+    <h2>المادة الثالثة: مدة العقد</h2>
+    <p>
+      يسري هذا العقد اعتباراً من تاريخ {{ contract.start_date|date:"j F Y" }}م،
+      وينتهي في تاريخ {{ contract.end_date|date:"j F Y" }}م،
+      ما لم يُفسخ أو يُجدد وفق أحكامه.
+    </p>
+    {% if contract.auto_renewal %}
+    <p>يتجدد العقد تلقائياً ما لم يُخطر أحد الطرفين الآخر بعدم الرغبة في التجديد قبل انتهائه بمدة لا تقل عن {{ contract.notice_period_days }} يوماً.</p>
+    {% else %}
+    <p>لا يتجدد هذا العقد تلقائياً، وأي تمديد يتطلب اتفاقاً كتابياً لاحقاً.</p>
+    {% endif %}
+
+    <h2>المادة الرابعة: القيمة المالية</h2>
+    <p>
+      تبلغ القيمة الإجمالية لهذا العقد
+      <strong>{{ contract.actual_value|floatformat:0 }} ريالاً سعودياً</strong>
+      {% if amount_words %}({{ amount_words }}){% endif %}.
+    </p>
+    {% if contract.shelf_rate %}
+    <table class="data">
+      <tr><th>نوع الرف / الوحدة</th><td>{{ contract.shelf_rate.name }}</td></tr>
+      <tr><th>السعر المعياري المعتمد</th><td>{{ contract.shelf_rate.standard_price }} ر.س / {{ contract.shelf_rate.unit }}</td></tr>
+      <tr><th>السعر الفعلي المتفق عليه</th><td>{{ contract.shelf_actual_price }} ر.س</td></tr>
+    </table>
+    {% endif %}
+
+    {% if contract.targets.all %}
+    <h2>المادة الخامسة: شرائح الخصم والأهداف</h2>
+    <table class="data">
+      <tr>
+        <th>الوصف</th>
+        <th>قيمة الهدف (ر.س)</th>
+        <th>نسبة الخصم</th>
+      </tr>
+      {% for t in contract.targets.all %}
+      <tr>
+        <td>{{ t.title }}</td>
+        <td>{{ t.target_value|floatformat:2 }}</td>
+        <td>{{ t.discount_percent }}٪</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+    <h2>{% if contract.targets.all %}المادة السادسة{% else %}المادة الخامسة{% endif %}: أحكام عامة</h2>
+    <ol class="terms">
+      <li>يخضع هذا العقد لأنظمة المملكة العربية السعودية، وتختص جهات القضاء المختصة في المملكة بالنظر في أي نزاع ينشأ عنه.</li>
+      <li>لا يُعتد بأي تعديل على هذا العقد إلا إذا كان مكتوباً وموقّعاً من الطرفين.</li>
+      <li>تشكّل هذه الوثيقة النسخة النظامية المعتمدة داخل منظومة العقود في {{ organization.name }}، وتُحفظ في السجل المركزي للعقود.</li>
+      {% if contract.has_non_standard_terms %}<li>يتضمن هذا العقد شروطاً غير معيارية، وقد استلزم ذلك المرور بالمراجعة النظامية المعتمدة.</li>{% endif %}
+      <li>حرر هذا العقد من نسختين أصليتين، لكل طرف نسخة للعمل بموجبها.</li>
+    </ol>
+
+    <h2>{% if contract.targets.all %}المادة السابعة{% else %}المادة السادسة{% endif %}: التوقيع</h2>
+    <p>وإشهاداً على ما تقدم، وقع الطرفان أدناه:</p>
+    <table class="sign">
+      <tr>
+        <td>
+          <div class="role">الطرف الأول: {{ organization.name }}</div>
+          الاسم: {{ contract.commercial_owner.get_full_name|default:contract.commercial_owner.username }}<br>
+          الصفة: مسؤول العقد التجاري<br>
+          التاريخ: ..................
+          <div class="line">التوقيع: ....................&nbsp;&nbsp;&nbsp;الختم: ....................</div>
+        </td>
+        <td>
+          <div class="role">الطرف الثاني: {{ contract.vendor.legal_name }}</div>
+          الاسم: {% firstof contract.vendor.contact_name ".................." %}<br>
+          الصفة: الممثل المعتمد<br>
+          التاريخ: ..................
+          <div class="line">التوقيع: ....................&nbsp;&nbsp;&nbsp;الختم: ....................</div>
+        </td>
+      </tr>
+    </table>
+
+    <footer class="footer">
+      <span>نسخة صادرة من منظومة إدارة العقود — {{ organization.name }}</span>
+      <span>{{ contract.contract_number }}</span>
+    </footer>
+  </article>
+</body>
+</html>

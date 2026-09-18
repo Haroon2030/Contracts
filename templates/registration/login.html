@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تسجيل الدخول — أسواق الرشيد</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Cairo', 'sans-serif'] },
+          colors: {
+            navy: { 800: '#0f172a', 600: '#1e293b' },
+            teal: { DEFAULT: '#2563eb', dark: '#1d4ed8', light: '#eff6ff' },
+            gold: { DEFAULT: '#f59e0b' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="font-sans min-h-screen antialiased flex flex-col lg:flex-row bg-slate-50">
+  <div class="w-full lg:w-[48%] min-h-screen bg-white flex flex-col justify-between p-8 lg:p-14 border-l border-slate-100">
+    <div class="flex items-center justify-between">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold">
+        <span class="w-2 h-2 rounded-full bg-teal"></span>
+        بوابة منسوبي أسواق الرشيد
+      </div>
+    </div>
+    <div class="max-w-md w-full mx-auto py-10">
+      <h2 class="text-3xl font-black text-slate-900 mb-2">تسجيل الدخول</h2>
+      <p class="text-sm text-slate-500 mb-8">أدخل بيانات الموظف المعتمد للوصول إلى منظومة العقود في أسواق الرشيد.</p>
+      {% if form.errors %}
+        <div class="mb-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm px-4 py-3 font-semibold">بيانات الدخول غير صحيحة.</div>
+      {% endif %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="mb-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm px-4 py-3 font-semibold">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">اسم المستخدم</label>
+          <input name="username" class="w-full rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-teal focus:border-teal text-sm font-semibold" required autofocus>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">كلمة المرور</label>
+          <input type="password" name="password" class="w-full rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:ring-teal focus:border-teal text-sm font-semibold" required>
+        </div>
+        <button class="w-full py-3 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold shadow-lg shadow-teal/25">دخول إلى المنظومة</button>
+      </form>
+      <p class="mt-6 text-[11px] text-slate-400 leading-relaxed">استخدام النظام خاضع لسياسات أمن المعلومات في أسواق الرشيد. المعاملات مؤرخة ومحمية.</p>
+    </div>
+    <div class="text-[11px] text-slate-400">v4.8 Enterprise</div>
+  </div>
+  <div class="w-full lg:w-[52%] min-h-screen bg-navy-800 text-white flex flex-col justify-between p-10 lg:p-16 relative overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-teal/20 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl"></div>
+    <div class="relative z-10">
+      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.06] border border-gold/40 text-gold text-xs font-semibold mb-8">أسواق الرشيد</div>
+      <h1 class="text-4xl lg:text-5xl font-black leading-tight mb-4">نظام إدارة <span class="text-gold">العقود</span></h1>
+      <p class="text-slate-300 max-w-xl leading-relaxed">المنظومة المركزية لأسواق الرشيد لإدارة دورة حياة عقود التوريد، إيجار الأرفف، والتسويق وفق معايير الحوكمة.</p>
+    </div>
+    <div class="relative z-10 space-y-3">
+      <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10">مصفوفة الموافقات الآلية حسب القيمة وانحراف سعر الرف</div>
+      <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10">رصد فترات الإشعار والانتهاء 90 / 60 / 30 يوماً</div>
+      <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10">السجل الموحد مصدر الحقيقة الوحيد للعقد</div>
+    </div>
+  </div>
+</body>
+</html>

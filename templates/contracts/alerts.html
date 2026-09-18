@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load contract_tags %}
+{% block title %}التنبيهات والمخاطر{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl lg:text-3xl font-black">التنبيهات والمخاطر</h1>
+    <p class="text-sm text-slate-500 mt-1">حساب آلي لانتهاء العقود، إشعار التجديد، التوقيع المتأخر، وانحراف سعر الرف</p>
+  </div>
+</div>
+<form method="get" class="mb-5">
+  <select name="severity" onchange="this.form.submit()" class="rounded-xl border-slate-200 text-sm">
+    <option value="">كل المستويات</option>
+    {% for key, label in severity_choices %}<option value="{{ key }}" {% if selected_severity == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+</form>
+<div class="space-y-3">
+  {% for a in alerts %}
+  <a href="{% url 'contracts:detail' a.contract.pk %}" class="block bg-white rounded-2xl border border-slate-200 shadow-sm p-4 hover:border-teal/40">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <div class="font-bold">{{ a.contract.contract_number }} — {{ a.contract.vendor.legal_name }}</div>
+        <div class="text-sm text-slate-600 mt-1">{{ a.message }}</div>
+        <div class="text-[11px] text-slate-400 mt-1">{{ a.get_alert_type_display }}</div>
+      </div>
+      <span class="text-[11px] font-bold px-2 py-1 rounded-lg border {{ a.severity|severity_chip }}">{{ a.get_severity_display }}</span>
+    </div>
+  </a>
+  {% empty %}
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center text-slate-500">لا تنبيهات مفتوحة.</div>
+  {% endfor %}
+</div>
+{% endblock %}

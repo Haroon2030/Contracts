@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load humanize contract_tags %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1 class="text-2xl lg:text-3xl font-black mb-1">{{ title }}</h1>
+<p class="text-sm text-slate-500 mb-6">{{ subtitle }}</p>
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-50 text-xs text-slate-500">
+      <tr>
+        <th class="text-right p-3">العقد</th>
+        <th class="text-right p-3">المورد</th>
+        <th class="text-right p-3">النوع</th>
+        <th class="text-right p-3">القيمة</th>
+        <th class="text-right p-3">جهة الاعتماد</th>
+        <th class="text-right p-3"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in contracts %}
+      <tr class="border-t hover:bg-slate-50">
+        <td class="p-3 font-mono font-bold">{{ c.contract_number }}</td>
+        <td class="p-3">{{ c.vendor.legal_name }}</td>
+        <td class="p-3">{{ c.get_contract_type_display }}</td>
+        <td class="p-3 font-mono">{{ c.actual_value|floatformat:0|intcomma }}</td>
+        <td class="p-3">{{ c.required_approver_label }}</td>
+        <td class="p-3"><a href="{% url 'contracts:detail' c.pk %}" class="text-teal font-bold">فتح</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="p-8 text-center text-slate-500">لا عناصر في هذا الطابور.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

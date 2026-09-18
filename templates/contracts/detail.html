@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load humanize contract_tags %}
+{% block title %}{{ contract.contract_number }}{% endblock %}
+{% block content %}
+<div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-6">
+  <div>
+    <div class="text-xs text-slate-500 mb-1">{{ contract.vendor.vendor_number }} · {{ contract.vendor.legal_name }}</div>
+    <h1 class="text-2xl lg:text-3xl font-black">{{ contract.contract_number }}</h1>
+    <p class="text-sm text-slate-500 mt-1">{{ contract.get_contract_type_display }}{% if contract.get_subtype_display %} — {{ contract.get_subtype_display }}{% endif %}{% if contract.internal_classification %} · {{ contract.internal_classification }}{% endif %}</p>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="px-3 py-1.5 rounded-xl text-xs font-bold border {{ contract.status|status_chip }}">{{ contract.get_status_display }}</span>
+    <button type="button" class="js-print-contract px-4 py-2 rounded-xl bg-slate-800 text-white text-sm font-bold" data-print-url="{% url 'contracts:print' contract.pk %}?embed=1">طباعة العقد</button>
+    {% if contract.status == 'draft' %}
+    <a href="{% url 'contracts:edit' contract.pk %}" class="px-4 py-2 rounded-xl border bg-white text-sm font-bold">تعديل المسودة</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6 text-xs">
+  {% with s=contract.status %}
+  <div class="rounded-xl p-3 border {% if s == 'draft' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">مسودة</div>
+  <div class="rounded-xl p-3 border {% if s == 'under_review' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">مراجعة قانونية</div>
+  <div class="rounded-xl p-3 border {% if s == 'pending_approval' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">موافقة</div>
+  <div class="rounded-xl p-3 border {% if s == 'pending_signature' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">توقيع</div>
+  <div class="rounded-xl p-3 border {% if s == 'active' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">نشط</div>
+  {% endwith %}
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 space-y-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="font-bold mb-4">بيانات العقد</h2>
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div><div class="text-xs text-slate-500">القسم</div><div class="font-bold">{{ contract.department }}</div></div>
+        <div><div class="text-xs text-slate-500">المالك التجاري</div><div class="font-bold">{{ contract.commercial_owner.get_full_name }}</div></div>
+        <div><div class="text-xs text-slate-500">تاريخ البدء</div><div class="font-bold">{{ contract.start_date }}</div></div>
+        <div><div class="text-xs text-slate-500">تاريخ الانتهاء</div><div class="font-bold">{{ contract.end_date }}</div></div>
+        <div><div class="text-xs text-slate-500">القيمة</div><div class="font-bold font-mono">{{ contract.actual_value|floatformat:0|intcomma }} ر.س</div></div>
+        <div><div class="text-xs text-slate-500">جهة الاعتماد المطلوبة</div><div class="font-bold">{{ contract.required_approver_label }}</div></div>
+        <div><div class="text-xs text-slate-500">تجديد تلقائي</div><div class="font-bold">{% if contract.auto_renewal %}نعم — إشعار {{ contract.notice_period_days }} يوماً{% else %}لا{% endif %}</div></div>
+        <div><div class="text-xs text-slate-500">شروط غير معيارية</div><div class="font-bold">{% if contract.has_non_standard_terms %}نعم{% else %}لا{% endif %}</div></div>
+        {% if contract.shelf_rate %}
+        <div><div class="text-xs text-slate-500">سعر الرف المعياري</div><div class="font-bold">{{ contract.shelf_rate.standard_price }} ر.س</div></div>
+        <div><div class="text-xs text-slate-500">سعر الرف الفعلي</div><div class="font-bold {% if contract.has_shelf_price_deviation %}text-amber-700{% endif %}">{{ contract.shelf_actual_price }} ر.س{% if contract.has_shelf_price_deviation %} (انحراف {{ contract.shelf_deviation_percent|floatformat:0 }}%){% endif %}</div></div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if contract.targets.all %}
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="font-bold mb-4">شرائح الخصم</h2>
+      <div class="grid md:grid-cols-2 gap-3">
+        {% for t in contract.targets.all %}
+        <div class="p-4 rounded-xl border">
+          <div class="flex justify-between font-bold text-sm"><span>{{ t.title }}</span><span class="text-teal">{{ t.discount_percent }}%</span></div>
+          <div class="text-xs text-slate-500 mt-1">عند تجاوز {{ t.target_value|floatformat:0|intcomma }} ر.س</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="font-bold mb-1">المرفقات</h2>
+      {% if contract.status == 'draft' %}
+      <p class="text-xs text-slate-500 mb-4">ارفق النسخة الأصلية أولاً. بعدها يمكن إرسال العقد لمسار العمل ليراجعه الشؤون القانونية ثم يرفق نسخته.</p>
+      {% elif contract.status == 'under_review' %}
+      <p class="text-xs text-slate-500 mb-4">اطّلع على النسخة الأصلية، ثم أرفق نسخة المراجعة القانونية مع قرار الاعتماد.</p>
+      {% else %}
+      <p class="text-xs text-slate-500 mb-4">ملفات العقد المرتبطة بكل مرحلة من المسار.</p>
+      {% endif %}
+      <ul class="text-sm space-y-2 mb-4">
+        {% for a in contract.attachments.all %}
+        <li class="flex justify-between gap-3 border-b pb-2">
+          <span>
+            <span class="font-bold">{{ a.get_kind_display }}</span>
+            {% if a.file %}
+            — <a class="text-teal" href="{% url 'contracts:attachment' contract.pk a.pk %}">{{ a.original_name }}</a>
+            {% else %}
+            — {{ a.original_name }}
+            {% endif %}
+          </span>
+          <span class="text-xs text-slate-400 whitespace-nowrap">{{ a.uploaded_at }}</span>
+        </li>
+        {% empty %}<li class="text-slate-500">لا مرفقات بعد.</li>{% endfor %}
+      </ul>
+      <form method="post" action="{% url 'contracts:upload' contract.pk %}" enctype="multipart/form-data" class="grid md:grid-cols-3 gap-3 items-end">
+        {% csrf_token %}
+        <div>{{ attachment_form.kind.label_tag }}{{ attachment_form.kind }}</div>
+        <div>{{ attachment_form.file.label_tag }}{{ attachment_form.file }}</div>
+        <button class="px-4 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-sm">رفع</button>
+      </form>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="font-bold mb-4">سجل التدقيق</h2>
+      <ul class="space-y-2 text-sm">
+        {% for log in contract.audit_logs.all %}
+        <li class="flex justify-between gap-3 border-b pb-2">
+          <span><strong>{{ log.action }}</strong> — {{ log.actor.get_full_name|default:log.actor.username }}</span>
+          <span class="text-xs text-slate-400 whitespace-nowrap">{{ log.created_at }}</span>
+        </li>
+        {% empty %}<li class="text-slate-500">لا حركات بعد.</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="font-bold mb-4">الإجراءات</h2>
+      <button type="button" class="js-print-contract w-full text-center py-2.5 rounded-xl border border-slate-200 bg-white font-bold text-sm mb-3 hover:border-teal" data-print-url="{% url 'contracts:print' contract.pk %}?embed=1">طباعة العقد</button>
+      {% if can_submit %}
+        {% if has_original %}
+        <form method="post" action="{% url 'contracts:submit' contract.pk %}" class="mb-3">{% csrf_token %}<button class="w-full py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">إرسال في مسار العمل</button></form>
+        {% else %}
+        <p class="text-xs text-amber-700 mb-2">ارفق النسخة الأصلية من قسم المرفقات قبل الإرسال، حتى تُراجع قانونياً ثم تُرفق النسخة المعتمدة.</p>
+        <button type="button" disabled class="w-full py-2.5 rounded-xl bg-slate-200 text-slate-500 font-bold text-sm mb-3 cursor-not-allowed">إرسال في مسار العمل</button>
+        {% endif %}
+      {% endif %}
+      {% if can_legal %}
+      <form method="post" action="{% url 'contracts:legal_decide' contract.pk %}" enctype="multipart/form-data" class="space-y-2 mb-3">
+        {% csrf_token %}
+        {{ decision_form.comment }}
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1" for="id_legal_file">نسخة المراجعة القانونية</label>
+          <input id="id_legal_file" type="file" name="file" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold">
+          {% if has_legal_review %}
+          <p class="text-[11px] text-teal-dark mt-1">تم إرفاق نسخة المراجعة. يمكن اعتماد القرار الآن.</p>
+          {% else %}
+          <p class="text-[11px] text-slate-500 mt-1">راجع النسخة الأصلية ثم أرفق ملف المراجعة هنا قبل الاعتماد القانوني.</p>
+          {% endif %}
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button name="decision" value="approve" class="py-2 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">اعتماد قانوني</button>
+          <button name="decision" value="reject" class="py-2 rounded-xl bg-rose-600 text-white font-bold text-sm">إعادة للمسودة</button>
+        </div>
+      </form>
+      {% endif %}
+      {% if can_approve %}
+      <p class="text-xs text-slate-500 mb-2">الخطوة الحالية: {{ pending_step.get_role_display }}</p>
+      <form method="post" action="{% url 'contracts:approve' contract.pk %}" class="space-y-2 mb-3">
+        {% csrf_token %}
+        {{ decision_form.comment }}
+        <div class="grid grid-cols-2 gap-2">
+          <button name="decision" value="approve" class="py-2 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">اعتماد</button>
+          <button name="decision" value="reject" class="py-2 rounded-xl bg-rose-600 text-white font-bold text-sm">رفض</button>
+        </div>
+      </form>
+      {% endif %}
+      {% if can_escalate %}
+      <form method="post" action="{% url 'contracts:escalate' contract.pk %}" class="space-y-2">
+        {% csrf_token %}
+        {{ escalate_form.reason }}
+        <button class="w-full py-2 rounded-xl border font-bold text-sm">تصعيد لإدارة العقود</button>
+      </form>
+      {% endif %}
+      {% if not can_submit and not can_legal and not can_approve and not can_escalate %}
+      <p class="text-sm text-slate-500">لا توجد إجراءات متاحة لدورك في هذه الحالة.</p>
+      {% endif %}
+      {% if can_sign %}
+      <p class="text-xs text-amber-700 mt-3">ارفع النسخة الموقعة من نوع «النسخة الموقعة» لتثبيت التوقيع.</p>
+      {% endif %}
+    </div>
+
+    {% if contract.alerts.all %}
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="font-bold mb-3">تنبيهات هذا العقد</h2>
+      <ul class="space-y-2">
+        {% for a in contract.alerts.all %}
+          {% if a.is_open %}
+          <li class="text-xs p-2 rounded-lg border {{ a.severity|severity_chip }}">{{ a.message }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<iframe id="contract-print-frame" title="طباعة العقد" class="sr-only" style="position:absolute;width:0;height:0;border:0;" aria-hidden="true"></iframe>
+<script>
+(function () {
+  function triggerPrint(frame) {
+    var win = frame.contentWindow;
+    if (!win) return;
+    var run = function () {
+      try {
+        win.focus();
+        win.print();
+      } catch (err) {
+        window.alert("تعذر فتح نافذة الطباعة. اسمح بالنوافذ المنبثقة لهذا الموقع ثم أعد المحاولة.");
+      }
+    };
+    if (win.document.fonts && win.document.fonts.ready) {
+      win.document.fonts.ready.then(function () { setTimeout(run, 50); }).catch(run);
+    } else {
+      setTimeout(run, 300);
+    }
+  }
+
+  function printFrom(url) {
+    var frame = document.getElementById("contract-print-frame");
+    if (!frame) return;
+    fetch(url, { credentials: "same-origin" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("print-http");
+        return res.text();
+      })
+      .then(function (html) {
+        frame.onload = function () { triggerPrint(frame); };
+        frame.srcdoc = html;
+      })
+      .catch(function () {
+        window.alert("تعذر تجهيز نسخة الطباعة. حدّث الصفحة ثم أعد المحاولة.");
+      });
+  }
+
+  document.querySelectorAll(".js-print-contract").forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      event.preventDefault();
+      printFrom(btn.getAttribute("data-print-url"));
+    });
+  });
+})();
+</script>
+{% endblock %}

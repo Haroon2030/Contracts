@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نظام إدارة العقود 2027 — إنشاء عقد جديد</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              teal: '#0E7A68',
+              'teal-hover': '#095F51',
+              'teal-subtle': '#E8F6F3',
+              gold: '#C8931F',
+              'gold-subtle': '#FEF9EC',
+              navy: '#0B1F33',
+              'navy-surface': '#0F2740',
+              'navy-border': '#1B3552',
+            }
+          },
+          boxShadow: {
+            'card': '0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.03)',
+            'card-hover': '0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04)',
+            'subtle': '0 0 0 1px rgba(15, 23, 42, 0.06), 0 1px 2px 0 rgba(15, 23, 42, 0.04)',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0.6;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="font-sans bg-[#FAFBFD] text-slate-900 min-h-screen antialiased flex flex-row selection:bg-brand-teal/15 selection:text-brand-teal">
+<!-- Sidebar (Institutional Navy 2027 #0B1F33) -->
+<aside class="w-[280px] bg-[#0B1F33] text-white flex flex-col justify-between shrink-0 min-h-screen border-l border-brand-navy-border/50 shadow-2xl select-none z-20">
+<div class="flex flex-col">
+<!-- Enterprise Branding Header -->
+<div class="p-6 border-b border-brand-navy-border/60">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-6 h-6 rounded-md bg-gradient-to-tr from-brand-gold to-amber-300 flex items-center justify-center text-navy font-black text-xs shadow-sm">❖</span>
+<span class="text-xs font-bold text-amber-400 tracking-wide">مجموعة الراشد التجارية</span>
+</div>
+<div class="text-xl font-black text-white tracking-tight">إدارة العقود الذكية</div>
+<div class="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[11px] text-slate-300 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          قطاع التجزئة والأسواق الكبرى
+        </div>
+</div>
+<!-- Navigation Links -->
+<nav class="p-4 space-y-1.5">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-brand-navy-surface font-medium text-sm transition group" href="#">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200">dashboard</span>
+<span>لوحة التحكم</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-brand-navy-surface font-medium text-sm transition group" href="#">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200">inventory_2</span>
+<span>سجل العقود</span>
+</a>
+<!-- Active Tab: New Contract -->
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-l from-brand-teal to-[#0C6D5D] text-white font-bold text-sm shadow-lg shadow-brand-teal/25 border border-teal-500/30" href="#">
+<span class="material-symbols-outlined text-[20px] text-white">note_add</span>
+<span>إنشاء عقد جديد</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-brand-navy-surface font-medium text-sm transition group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200">fact_check</span>
+<span>قائمة الموافقات</span>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 tabular-nums">3 معلقة</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-brand-navy-surface font-medium text-sm transition group" href="#">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200">gavel</span>
+<span>المراجعة القانونية</span>
+</a>
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-brand-navy-surface font-medium text-sm transition group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200">notifications_active</span>
+<span>التنبيهات والرقابة</span>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/15 text-rose-300 border border-rose-500/30 tabular-nums">5 حرجة</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-brand-navy-surface font-medium text-sm transition group" href="#">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200">price_change</span>
+<span>أسعار الأرفف المعيارية</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Footer -->
+<div class="p-4 border-t border-brand-navy-border/80 bg-brand-navy-surface/60">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-teal to-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-white/10 shrink-0">
+            نع
+          </div>
+<div class="truncate">
+<div class="text-sm font-bold text-white truncate">نورة العتيبي</div>
+<div class="text-[11px] text-slate-400 truncate">موظفة قسم العقود والامتياز</div>
+</div>
+</div>
+<button class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 transition" title="إعدادات الحساب">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 min-h-screen overflow-y-auto">
+<div class="max-w-[1240px] mx-auto p-8 space-y-6">
+<!-- Top Sticky-ready Action Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+<div>
+<div class="flex items-center gap-2 mb-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-teal-subtle text-brand-teal border border-teal-200/80">مسار إدخال عقود التجزئة 2027</span>
+<span class="text-xs text-slate-400">•</span>
+<span class="text-xs font-semibold text-slate-500">رمز العقد المؤقت: <span class="font-mono text-slate-700">CTR-2027-DRAFT</span></span>
+</div>
+<h1 class="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">إنشاء عقد تجاري جديد</h1>
+<p class="text-xs text-slate-500 font-medium mt-1">تحديد بنود المورد، شروط الإيجار التجاري ومساحات العرض، مع الاحتساب التلقائي لمصفوفة الحوكمة</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-600 transition shadow-sm hover:border-slate-300" type="button">
+            إلغاء التعديل
+          </button>
+<button class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 transition shadow-sm flex items-center gap-1.5 hover:border-slate-300" type="button">
+<span class="material-symbols-outlined text-[18px] text-slate-500">visibility</span>
+<span>معاينة المسودة</span>
+</button>
+<button class="px-6 py-2.5 rounded-xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm shadow-md shadow-brand-teal/20 transition flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>حفظ كمسودة</span>
+</button>
+</div>
+</div>
+<!-- Form Body -->
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<!-- Section 1: Classification & Parties -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-card hover:shadow-card-hover transition-all">
+<div class="pb-4 border-b border-slate-100 flex items-center justify-between mb-5">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-teal-50 text-brand-teal border border-teal-200/60 flex items-center justify-center font-black text-sm shadow-xs">
+                1
+              </span>
+<div>
+<h3 class="font-bold text-slate-900 text-base">التصنيف والأطراف المتعاقدة</h3>
+<p class="text-[11px] text-slate-400">تحديد الكيان المورد، الطبيعة التشغيلية والأطراف المسؤولة داخلياً</p>
+</div>
+</div>
+<span class="text-[11px] font-semibold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-200/60">
+              * حقول إلزامية للاعتماد
+            </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+<!-- Commercial Supplier -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">المورد التجاري <span class="text-rose-500">*</span></label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px]">store</span>
+<input class="w-full pr-10 pl-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal transition shadow-xs" placeholder="ابحث برقم السجل أو الاسم التجاري..." type="text" value="شركة نستله الشرق الأوسط للتجارة"/>
+</div>
+</div>
+<!-- Main Contract Type -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">نوع العقد الرئيسي <span class="text-rose-500">*</span></label>
+<div class="relative">
+<select class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal transition shadow-xs appearance-none">
+<option selected="">إيجار أرفف ومساحات بيعية</option>
+<option>توريد (فريش / طازج)</option>
+<option>توريد (غذائي جاف ومجمد)</option>
+<option>توريد (لا غذائي واستقراري)</option>
+<option>تسويق ورعايات مشتركة</option>
+<option>خدمات وتشغيل لوجستي</option>
+</select>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- Subtype / Internal Classification -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">النوع الفرعي / التصنيف الداخلي</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px]">category</span>
+<input class="w-full pr-10 pl-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal transition shadow-xs" type="text" value="تأجير رؤوس ممرات (End-Cap Display)"/>
+</div>
+</div>
+<!-- Beneficiary Commercial Dept -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">القسم التجاري المستفيد <span class="text-rose-500">*</span></label>
+<div class="relative">
+<select class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal transition shadow-xs appearance-none">
+<option selected="">المشروبات الساخنة والحلويات</option>
+<option>الألبان والمنتجات المبردة</option>
+<option>اللحوم والدواجن الطازجة</option>
+<option>المخبوزات والحلويات الشرقية</option>
+<option>المنظفات ومستلزمات العناية</option>
+</select>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- Commercial Owner -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">المالك التجاري (Commercial Owner)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px]">person</span>
+<input class="w-full pr-10 pl-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal transition shadow-xs" type="text" value="سلطان القحطاني"/>
+</div>
+</div>
+<!-- Superintending Procurement Manager -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">مدير المشتريات المشرف</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px]">verified_user</span>
+<input class="w-full pr-10 pl-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white text-xs font-semibold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal transition shadow-xs" type="text" value="فيصل بن حمد الراشد"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Duration, Value & Shelf Matrix -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-card hover:shadow-card-hover transition-all space-y-5">
+<div class="pb-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-teal-50 text-brand-teal border border-teal-200/60 flex items-center justify-center font-black text-sm shadow-xs">
+                2
+              </span>
+<div>
+<h3 class="font-bold text-slate-900 text-base">المدة، القيمة المالية ومحددات الأرفف</h3>
+<p class="text-[11px] text-slate-400">تطبيق محددات التعاقد وحساب الانحراف المالي المباشر</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span class="text-xs text-amber-700 font-bold bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200/80">تخضع لمصفوفة الصلاحيات</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Effective Start Date -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">تاريخ بدء السريان <span class="text-rose-500">*</span></label>
+<div class="relative">
+<input class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal tabular-nums shadow-xs" type="date" value="2025-05-01"/>
+</div>
+</div>
+<!-- End Date -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">تاريخ الانتهاء <span class="text-rose-500">*</span></label>
+<div class="relative">
+<input class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal tabular-nums shadow-xs" type="date" value="2026-04-30"/>
+</div>
+</div>
+<!-- Notice Period -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">مهلة الإشعار المسبق (أيام) <span class="text-rose-500">*</span></label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">event_available</span>
+<input class="w-full pr-10 pl-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal tabular-nums shadow-xs" type="number" value="60"/>
+</div>
+</div>
+<!-- Total Contract Value -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-700">القيمة التعاقدية الإجمالية (ر.س) <span class="text-rose-500">*</span></label>
+<div class="relative">
+<span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">ر.س</span>
+<input class="w-full pr-3.5 pl-12 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-sm font-black text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal/30 focus:border-brand-teal tabular-nums shadow-xs" type="text" value="28,800"/>
+</div>
+</div>
+<!-- Standard Shelf Price -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-bold text-slate-700">سعر الرف المعياري المعتمد</label>
+<span class="text-[10px] font-semibold text-slate-400">نظامي</span>
+</div>
+<div class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-100/70 text-xs font-bold text-slate-600 flex items-center justify-between">
+<span class="tabular-nums font-mono">1,000 ر.س</span>
+<span class="text-[11px] text-slate-400">شهرياً / رف</span>
+</div>
+</div>
+<!-- Actual Negotiated Price -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="block text-xs font-bold text-amber-900">سعر الرف الفعلي المتفق عليه <span class="text-rose-500">*</span></label>
+<span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.2 rounded">+20% انحراف</span>
+</div>
+<div class="relative">
+<span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-amber-700">ر.س</span>
+<input class="w-full pr-3.5 pl-12 py-2.5 rounded-xl border border-amber-300 bg-amber-50/40 text-xs font-mono font-bold text-amber-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 tabular-nums shadow-xs" type="text" value="1,200"/>
+</div>
+</div>
+<!-- Toggles (Modern Switch UI) -->
+<div class="lg:col-span-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-1">
+<!-- Auto Renewal Toggle -->
+<label class="flex-1 flex items-center justify-between p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-white transition cursor-pointer group">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-slate-500 group-hover:text-brand-teal transition">autorenew</span>
+<div>
+<div class="text-xs font-bold text-slate-800">التجديد التلقائي</div>
+<div class="text-[10px] text-slate-400">Auto-Renewal سنوياً</div>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-teal"></div>
+</div>
+</label>
+<!-- Non-Standard Conditions Toggle -->
+<label class="flex-1 flex items-center justify-between p-3 rounded-xl border border-amber-200/80 bg-amber-50/30 hover:bg-white transition cursor-pointer group">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px] text-amber-600">tune</span>
+<div>
+<div class="text-xs font-bold text-amber-900">شروط غير قياسية</div>
+<div class="text-[10px] text-amber-700/80">تستلزم اعتماد العقود</div>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+</div>
+</label>
+</div>
+</div>
+<!-- Dynamic Real-time Rule Alert Box (2027 Intelligent Warning) -->
+<div class="p-4 rounded-xl bg-gradient-to-r from-amber-50/90 via-amber-50/60 to-white border border-amber-200/90 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div class="text-xs leading-relaxed text-slate-700">
+<div class="font-bold text-amber-900 mb-0.5 flex items-center gap-1.5">
+<span>تنبيه نظام الامتثال ومصفوفة الصلاحيات الآلية</span>
+<span class="text-[10px] font-semibold bg-amber-200/80 text-amber-900 px-1.5 py-0.5 rounded">مستوى تدقيق 2</span>
+</div>
+                القيمة الإجمالية (<span class="font-mono font-bold text-slate-900 tabular-nums">28,800 ر.س</span>) أكبر من حد 15,000 ر.س مع وجود انحراف في سعر الرف (+20%) ← سيتطلب هذا العقد موافقة <strong>إدارة العقود والمشتريات</strong> ولا يكتفى باعتماد القسم.
+              </div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-center shrink-0">
+<span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/10 text-amber-800 border border-amber-300/60">
+                قاعدة الاعتماد #A-42
+              </span>
+</div>
+</div>
+</div>
+<!-- Section 3: Discount Tiers & Targets -->
+<div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-card hover:shadow-card-hover transition-all space-y-4">
+<div class="pb-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-teal-50 text-brand-teal border border-teal-200/60 flex items-center justify-center font-black text-sm shadow-xs">
+                3
+              </span>
+<div>
+<h3 class="font-bold text-slate-900 text-base">أهداف الخصم والشرائح التجارية (Volume Rebates)</h3>
+<p class="text-[11px] text-slate-400">حوافز حجم التوريد والمبيعات التصاعدية الممنوحة من المورد</p>
+</div>
+</div>
+<button class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-teal hover:text-brand-teal-hover bg-brand-teal-subtle/80 hover:bg-brand-teal-subtle px-3 py-1.5 rounded-xl border border-teal-200/60 transition shadow-xs" type="button">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>إضافة شريحة جديدة</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Tier 1 -->
+<div class="p-4 rounded-xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/50 hover:border-brand-teal/40 transition shadow-xs hover:shadow-card space-y-2.5 relative group">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-slate-100 text-slate-700 flex items-center justify-center text-xs font-bold">1</span>
+<span class="text-xs font-bold text-slate-800">الشريحة الأساسية</span>
+</div>
+<span class="px-2.5 py-1 rounded-lg text-xs font-mono font-extrabold bg-teal-50 text-brand-teal border border-teal-200 tabular-nums">
+                  3% خصم
+                </span>
+</div>
+<div class="text-[11px] text-slate-500 leading-normal">
+                عند تحقيق مبيعات ربع سنوية تتجاوز <span class="font-bold font-mono text-slate-700 tabular-nums">100,000 ر.س</span> عبر كافة فروع السوبر ماركت.
+              </div>
+<div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+<span>النوع: ربع سنوي (Q1-Q4)</span>
+<button class="text-slate-400 hover:text-rose-600 transition" title="حذف الشريحة" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Tier 2 -->
+<div class="p-4 rounded-xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/50 hover:border-brand-teal/40 transition shadow-xs hover:shadow-card space-y-2.5 relative group">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-md bg-slate-100 text-slate-700 flex items-center justify-center text-xs font-bold">2</span>
+<span class="text-xs font-bold text-slate-800">الشريحة المتقدمة</span>
+</div>
+<span class="px-2.5 py-1 rounded-lg text-xs font-mono font-extrabold bg-teal-50 text-brand-teal border border-teal-200 tabular-nums">
+                  5% خصم
+                </span>
+</div>
+<div class="text-[11px] text-slate-500 leading-normal">
+                عند تحقيق مبيعات ربع سنوية تتجاوز <span class="font-bold font-mono text-slate-700 tabular-nums">250,000 ر.س</span> مع أولوية إعادة التوزيع.
+              </div>
+<div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+<span>النوع: ربع سنوي + مكافأة رف</span>
+<button class="text-slate-400 hover:text-rose-600 transition" title="حذف الشريحة" type="button">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+</button>
+</div>
+</div>
+<!-- Add Tier Card -->
+<div class="p-4 rounded-xl border-2 border-dashed border-teal-300/80 bg-brand-teal-subtle/30 hover:bg-brand-teal-subtle/60 flex flex-col items-center justify-center text-center cursor-pointer transition group min-h-[120px]">
+<div class="w-9 h-9 rounded-full bg-white text-brand-teal flex items-center justify-center shadow-xs mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</div>
+<span class="text-brand-teal font-bold text-xs">+ إضافة شريحة مستهدفة</span>
+<span class="text-[11px] text-slate-500 mt-1">حوافز بيع إضافية لفروع الهايبر ماركت</span>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Bar -->
+<div class="sticky bottom-6 z-10 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2.5 text-xs text-slate-500">
+<span class="material-symbols-outlined text-[18px] text-slate-400">info</span>
+<span>سيتم حفظ العقد كـ <strong class="text-slate-900 font-bold">مسودة نظامية</strong> وإتاحته للمراجعة القانونية قبل الإحالة لمصفوفة الاعتماد.</span>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+<button class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 transition shadow-xs flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px] text-slate-500">article</span>
+<span>معاينة بنود العقد</span>
+</button>
+<button class="px-6 py-2.5 rounded-xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm shadow-md shadow-brand-teal/20 transition flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>حفظ كمسودة</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>نظام إدارة العقود — شركة محمد راشد الراشد للتجارة</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            navy: {
+              950: '#040C16',
+              900: '#061320',
+              850: '#091A2C',
+              800: '#0B1F33',
+              700: '#132C47',
+              600: '#1C3E63',
+            },
+            teal: {
+              50: '#ECFDF8',
+              100: '#D1FAEE',
+              500: '#14917B',
+              600: '#0F6B5C',
+              700: '#0A4C41',
+              DEFAULT: '#0F6B5C',
+              dark: '#094339',
+              light: '#E6F4F1',
+            },
+            gold: {
+              50: '#FDFBF4',
+              100: '#FAF4DE',
+              400: '#DEB93C',
+              500: '#C9A227',
+              DEFAULT: '#C9A227',
+              light: '#F8F1DE',
+            },
+            surface: {
+              DEFAULT: '#FFFFFF',
+              subtle: '#F8FAFC',
+              line: '#E2E8F0',
+            },
+            ink: {
+              primary: '#0F172A',
+              secondary: '#475569',
+              muted: '#94A3B8',
+            }
+          },
+          boxShadow: {
+            'lux-2xl': '0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.7)',
+            'lux-inner': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.8)',
+            'glow-teal': '0 10px 25px -5px rgba(15, 107, 92, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="font-sans bg-[#FBFBFE] text-ink-primary min-h-screen antialiased flex flex-col lg:flex-row overflow-x-hidden selection:bg-teal selection:text-white">
+<!-- Left Form Area: Ultra Pure Modern 2027 Workspace (RTL order: Left visually in screen) -->
+<div class="w-full lg:w-[48%] min-h-screen bg-white relative flex flex-col justify-between p-6 sm:p-10 lg:p-14 z-10 border-l border-slate-100">
+<!-- Subtle Modern Ambient Grid Background for Clean Depth -->
+<div class="absolute inset-0 pointer-events-none opacity-45" style="background-image: radial-gradient(#CBD5E1 1px, transparent 1px); background-size: 24px 24px;"></div>
+<!-- Top Bar: Quick Status & Security Badge -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200/70 text-slate-700 text-xs font-semibold shadow-sm">
+<span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+<span class="tracking-wide">بوابة منسوبي المؤسسة المعتمدة</span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-slate-400 font-mono">
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+</svg>
+<span class="tabular-nums">TLS 1.3 / 256-bit</span>
+</div>
+</div>
+<!-- Center: Modern Form Card -->
+<div class="relative z-10 w-full max-w-md mx-auto my-auto py-8">
+<!-- Header -->
+<div class="mb-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-teal-50 text-teal border border-teal-100 text-xs font-bold mb-3.5">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+</svg>
+          الوصول المفوّض — قطاع التجزئة
+        </div>
+<h2 class="text-3xl font-extrabold text-navy-900 tracking-tight">تسجيل الدخول</h2>
+<p class="text-sm text-ink-secondary mt-1.5 leading-relaxed font-medium">
+          أدخل بيانات الاعتماد الممنوحة لك للوصول إلى منظومة العقود والاتفاقيات.
+        </p>
+</div>
+<!-- Login Form with modern 2027 input ergonomics -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Username Field -->
+<div>
+<label class="block text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
+<span>اسم المستخدم أو البريد الوظيفي</span>
+<span class="text-[11px] font-normal text-slate-400">LDAP / SSO Active</span>
+</label>
+<div class="relative group">
+<div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="4"></circle>
+<path d="M20 21a8 8 0 0 0-16 0"></path>
+</svg>
+</div>
+<input class="w-full pr-11 pl-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white text-ink-primary text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all duration-200 shadow-sm" placeholder="e.g. contracts" type="text" value="contracts"/>
+</div>
+</div>
+<!-- Password Field -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="block text-xs font-bold text-slate-700">كلمة المرور</label>
+<a class="text-xs font-semibold text-teal hover:text-teal-dark hover:underline transition" href="#">نسيت كلمة المرور؟</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal transition-colors">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect>
+<circle cx="12" cy="16" r="1.5"></circle>
+<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+</svg>
+</div>
+<input class="w-full pr-11 pl-11 py-3.5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white text-ink-primary text-sm font-mono focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all duration-200 tracking-wider shadow-sm" type="password" value="Contracts@123"/>
+<button class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 hover:text-slate-600 transition" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+<circle cx="12" cy="12" r="3"></circle>
+</svg>
+</button>
+</div>
+</div>
+<!-- Keep logged in option -->
+<div class="flex items-center justify-between pt-1">
+<label class="flex items-center gap-2.5 cursor-pointer select-none">
+<input checked="" class="w-4 h-4 rounded-md text-teal focus:ring-teal/30 border-slate-300 transition duration-150" type="checkbox"/>
+<span class="text-xs font-semibold text-slate-600">تذكر جلسة العمل على هذا الجهاز المعتمد</span>
+</label>
+</div>
+<!-- Modern Deep Teal CTA Button -->
+<button class="w-full py-4 px-6 rounded-2xl bg-teal hover:bg-teal-dark active:scale-[0.99] text-white font-bold text-sm shadow-glow-teal transition-all duration-200 flex items-center justify-center gap-3 group mt-2" type="button">
+<span class="tracking-wide">دخول إلى النظام</span>
+<svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<line x1="19" x2="5" y1="12" y2="12"></line>
+<polyline points="12 19 5 12 12 5"></polyline>
+</svg>
+</button>
+</form>
+<!-- 2027 Pill/Glass Demo Credentials Box -->
+<div class="mt-7 p-4 rounded-2xl bg-gradient-to-r from-amber-50/70 via-gold-50/50 to-slate-50 border border-gold/30 shadow-sm space-y-2">
+<div class="flex items-center justify-between text-xs">
+<div class="font-bold text-navy-900 flex items-center gap-2">
+<span class="flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
+</span>
+<span>بيانات الدخول التجريبية (Demo Credentials)</span>
+</div>
+<span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-white/80 text-gold-500 border border-gold/30 font-bold">Admin Demo</span>
+</div>
+<div class="flex flex-wrap items-center gap-x-5 gap-y-1.5 pt-1 text-xs text-slate-600 font-mono">
+<div class="flex items-center gap-1.5">
+<span class="text-slate-400 font-sans text-[11px]">المستخدم:</span>
+<code class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-navy-900 select-all">contracts</code>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-slate-400 font-sans text-[11px]">كلمة المرور:</span>
+<code class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-navy-900 select-all">Contracts@123</code>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Footnote -->
+<div class="relative z-10 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
+<div class="text-center sm:text-right leading-relaxed">
+        استخدام النظام خاضع لسياسات أمن المعلومات لشركة محمد راشد الراشد. المعاملات مؤرخة ومحمية.
+      </div>
+<div class="font-mono text-slate-400 whitespace-nowrap">v4.8 Enterprise</div>
+</div>
+</div>
+<!-- Right Brand Panel: Royal Luxury Deep Navy (#0B1F33) with sophisticated glowing mesh and 2027 retail highlights -->
+<div class="w-full lg:w-[52%] min-h-screen bg-navy-800 text-white flex flex-col justify-between p-8 sm:p-12 lg:p-16 relative overflow-hidden shadow-2xl">
+<!-- Ambient Glow / Mesh Gradient Orbs for Modern 2027 Depth -->
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-teal/15 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/2 -left-32 w-80 h-80 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-20 right-1/4 w-80 h-80 bg-navy-600/30 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Subtle Geometric Ambient Dot Matrix -->
+<div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: radial-gradient(#FFFFFF 1.5px, transparent 1.5px); background-size: 28px 28px;"></div>
+<!-- Brand Header -->
+<div class="relative z-10">
+<!-- Luxury Gold Emblem Badge -->
+<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.06] border border-gold/40 text-gold-100 text-xs font-semibold backdrop-blur-md mb-8 shadow-sm">
+<div class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+</svg>
+</div>
+<span class="tracking-wide">شركة محمد راشد الراشد للتجارة</span>
+<span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+<span class="text-[11px] text-slate-300 font-normal">تأسست 1978</span>
+</div>
+<!-- Big Typography Header -->
+<div class="space-y-4">
+<h1 class="text-4xl sm:text-5xl lg:text-[52px] font-black tracking-tight text-white leading-[1.2]">
+          نظام إدارة <span class="text-transparent bg-clip-text bg-gradient-to-l from-teal-100 via-white to-gold-100">العقود الذكية</span>
+</h1>
+<p class="text-base sm:text-lg text-slate-300/90 font-normal max-w-xl leading-relaxed">
+          قطاع التجزئة والأسواق الكبرى — المنظومة المركزية المتطورة لأتمتة دورة حياة عقود التوريد، إيجار مساحات الأرفف، والامتياز التجاري وفق أعلى معايير الحوكمة المالية.
+        </p>
+</div>
+</div>
+<!-- Feature Pillars: Modern 2027 Cards with Crisp SVGs -->
+<div class="relative z-10 space-y-4 my-8 sm:my-10">
+<!-- Feature 1 -->
+<div class="group flex items-start gap-4 p-4 sm:p-4.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-gold/30 transition-all duration-300 backdrop-blur-sm">
+<div class="w-11 h-11 rounded-xl bg-gold/15 text-gold flex items-center justify-center shrink-0 border border-gold/30 shadow-inner">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h4 class="text-sm font-bold text-white mb-1 group-hover:text-gold-100 transition-colors">مصفوفة الموافقات الآلية والذكية</h4>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-teal/20 text-teal-100 border border-teal/30">Auto Matrix</span>
+</div>
+<p class="text-xs text-slate-300/80 leading-relaxed">
+            توجيه إلكتروني متعدد المستويات حسب الصلاحيات الإدارية، قيم التعاقد السنوية، ورسوم حجز المساحات التسويقية فورياً.
+          </p>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="group flex items-start gap-4 p-4 sm:p-4.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-teal/40 transition-all duration-300 backdrop-blur-sm">
+<div class="w-11 h-11 rounded-xl bg-teal/20 text-teal-100 flex items-center justify-center shrink-0 border border-teal/40 shadow-inner">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h4 class="text-sm font-bold text-white mb-1 group-hover:text-teal-100 transition-colors">رصد فترات الإشعار والانتهاء (90 / 60 / 30 يوم)</h4>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-gold/20 text-gold-100 border border-gold/30 tabular-nums">T-90 / T-30</span>
+</div>
+<p class="text-xs text-slate-300/80 leading-relaxed">
+            حماية القيمة التعاقدية للهايبرماركت، متابعة تجديدات الموردين، وإصدار التنبيهات المسبقة لمنع فراغ المساحات البيعية.
+          </p>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="group flex items-start gap-4 p-4 sm:p-4.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/20 transition-all duration-300 backdrop-blur-sm">
+<div class="w-11 h-11 rounded-xl bg-slate-700/50 text-slate-200 flex items-center justify-center shrink-0 border border-slate-600/60 shadow-inner">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+<path d="m9 12 2 2 4-4"></path>
+</svg>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h4 class="text-sm font-bold text-white mb-1 group-hover:text-white transition-colors">سجل تدقيق وحوكمة شاملة (Full Audit Trail)</h4>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">Compliant</span>
+</div>
+<p class="text-xs text-slate-300/80 leading-relaxed">
+            اعتمادات إلكترونية ملزمة غير قابلة للتعديل وتوثيق رقمي كامل لتاريخ بنود الاتفاقيات والملاحق التسويقية.
+          </p>
+</div>
+</div>
+</div>
+<!-- Bottom Footer Meta -->
+<div class="relative z-10 pt-6 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span>الخوادم المركزية نشطة — مركز بيانات الرياض</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-mono text-gold/90 text-[11px] tracking-wider px-2 py-0.5 rounded bg-gold/10 border border-gold/25">RASHID-RETAIL-SECURE</span>
+<span class="text-slate-500">|</span>
+<span class="text-slate-400">2027 Enterprise Core</span>
+</div>
+</div>
+</div>
+</body></html>
