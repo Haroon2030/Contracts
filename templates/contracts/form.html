@@ -14,7 +14,7 @@
       {% for field in form %}
         {% if field.name in "vendor,contract_type,subtype,internal_classification,department,commercial_owner,purchasing_manager" %}
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ field.label }}</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5" for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field }}
           {% if field.errors %}<p class="text-xs text-rose-600 mt-1">{{ field.errors.0 }}</p>{% endif %}
         </div>
@@ -29,8 +29,9 @@
       {% for field in form %}
         {% if field.name in "start_date,end_date,notice_period_days,actual_value,shelf_rate,shelf_actual_price,notes" %}
         <div class="{% if field.name == 'notes' %}lg:col-span-3{% endif %}">
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">{{ field.label }}</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5" for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field }}
+          {% if field.name == 'start_date' or field.name == 'end_date' %}<p class="text-[11px] text-slate-500 mt-1">السنة-الشهر-اليوم</p>{% endif %}
           {% if field.errors %}<p class="text-xs text-rose-600 mt-1">{{ field.errors.0 }}</p>{% endif %}
         </div>
         {% endif %}
@@ -47,13 +48,20 @@
     {{ formset.management_form }}
     <div class="space-y-3">
       {% for f in formset %}
-      <div class="grid md:grid-cols-4 gap-3 p-3 rounded-xl border bg-slate-50/50">
+      <div class="p-3 rounded-xl border bg-slate-50/50 space-y-3">
+        <div class="grid md:grid-cols-4 gap-3">
         {% for field in f.visible_fields %}
-        <div>
-          <label class="block text-[11px] font-bold text-slate-600 mb-1">{{ field.label }}</label>
-          {{ field }}
-        </div>
+          {% if field.name != 'DELETE' %}
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+          </div>
+          {% endif %}
         {% endfor %}
+        </div>
+        {% if f.DELETE %}
+        <label class="inline-flex items-center gap-2 text-xs font-bold text-rose-700" for="{{ f.DELETE.id_for_label }}">{{ f.DELETE }} احذف الشريحة</label>
+        {% endif %}
         {% for hidden in f.hidden_fields %}{{ hidden }}{% endfor %}
       </div>
       {% endfor %}

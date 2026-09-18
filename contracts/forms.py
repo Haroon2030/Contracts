@@ -46,9 +46,9 @@ def validate_attachment_file(uploaded):
 INPUT = (
     "w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white "
     "text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 "
-    "focus:ring-teal-700/30 focus:border-teal-700 transition"
+    "focus:ring-teal/30 focus:border-teal transition"
 )
-CHECK = "rounded border-slate-300 text-teal-700 focus:ring-teal-700"
+CHECK = "rounded border-slate-300 text-teal focus:ring-teal"
 
 
 class ContractForm(forms.ModelForm):
@@ -73,8 +73,8 @@ class ContractForm(forms.ModelForm):
             "shelf_actual_price",
         ]
         widgets = {
-            "start_date": forms.DateInput(attrs={"type": "date"}),
-            "end_date": forms.DateInput(attrs={"type": "date"}),
+            "start_date": forms.DateInput(attrs={"type": "date", "lang": "ar"}),
+            "end_date": forms.DateInput(attrs={"type": "date", "lang": "ar"}),
             "notes": forms.Textarea(attrs={"rows": 3}),
             "internal_classification": forms.TextInput(attrs={"placeholder": "مثال: تأجير رؤوس ممرات"}),
         }
@@ -109,8 +109,10 @@ class AttachmentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.label_suffix = ""
         self.fields["kind"].widget.attrs["class"] = INPUT
         self.fields["file"].widget.attrs["class"] = INPUT
+        self.fields["file"].help_text = "PDF أو Word أو صورة، حتى 10 ميجا."
 
     def clean_file(self):
         uploaded = self.cleaned_data.get("file")
@@ -127,6 +129,10 @@ class DecisionForm(forms.Form):
         widget=forms.Textarea(attrs={"rows": 3, "class": INPUT, "placeholder": "ملاحظة اختيارية على القرار"}),
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
 
 class EscalateForm(forms.Form):
     reason = forms.CharField(
@@ -134,6 +140,10 @@ class EscalateForm(forms.Form):
         max_length=2000,
         widget=forms.Textarea(attrs={"rows": 3, "class": INPUT, "placeholder": "سبب إحالة العقد لإدارة العقود"}),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
 
 
 TargetFormSet = inlineformset_factory(

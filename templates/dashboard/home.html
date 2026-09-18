@@ -11,7 +11,9 @@
     <h1 class="text-2xl lg:text-3xl font-black tracking-tight">لوحة التحكم التنفيذية</h1>
     <p class="text-sm text-slate-500 mt-1">رصد مؤشرات الأداء التعاقدي، الانحرافات السعرية، ومخاطر الانتهاء</p>
   </div>
+      {% if can_manage_contracts %}
       <a href="{% url 'contracts:create' %}" class="px-5 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm shadow-lg shadow-teal/20">+ عقد جديد</a>
+      {% endif %}
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">

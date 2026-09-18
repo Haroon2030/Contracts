@@ -10,7 +10,7 @@
   </div>
   <div class="flex items-center gap-2">
     <span class="px-3 py-1.5 rounded-xl text-xs font-bold border {{ contract.status|status_chip }}">{{ contract.get_status_display }}</span>
-    <button type="button" class="js-print-contract px-4 py-2 rounded-xl bg-slate-800 text-white text-sm font-bold" data-print-url="{% url 'contracts:print' contract.pk %}?embed=1">طباعة العقد</button>
+    <button type="button" class="js-print-contract px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-sm font-bold" data-print-url="{% url 'contracts:print' contract.pk %}?embed=1">طباعة العقد</button>
     {% if contract.status == 'draft' %}
     <a href="{% url 'contracts:edit' contract.pk %}" class="px-4 py-2 rounded-xl border bg-white text-sm font-bold">تعديل المسودة</a>
     {% endif %}
@@ -19,10 +19,10 @@
 
 <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6 text-xs">
   {% with s=contract.status %}
-  <div class="rounded-xl p-3 border {% if s == 'draft' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">مسودة</div>
-  <div class="rounded-xl p-3 border {% if s == 'under_review' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">مراجعة قانونية</div>
-  <div class="rounded-xl p-3 border {% if s == 'pending_approval' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">موافقة</div>
-  <div class="rounded-xl p-3 border {% if s == 'pending_signature' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">توقيع</div>
+  <div class="rounded-xl p-3 border {% if s == 'draft' %}bg-teal text-white border-teal{% elif s == 'under_review' or s == 'pending_approval' or s == 'pending_signature' or s == 'active' %}bg-teal-light text-teal-dark border-teal/20{% else %}bg-white{% endif %}">مسودة</div>
+  <div class="rounded-xl p-3 border {% if s == 'under_review' %}bg-teal text-white border-teal{% elif s == 'pending_approval' or s == 'pending_signature' or s == 'active' %}bg-teal-light text-teal-dark border-teal/20{% else %}bg-white{% endif %}">مراجعة قانونية</div>
+  <div class="rounded-xl p-3 border {% if s == 'pending_approval' %}bg-teal text-white border-teal{% elif s == 'pending_signature' or s == 'active' %}bg-teal-light text-teal-dark border-teal/20{% else %}bg-white{% endif %}">موافقة</div>
+  <div class="rounded-xl p-3 border {% if s == 'pending_signature' %}bg-teal text-white border-teal{% elif s == 'active' %}bg-teal-light text-teal-dark border-teal/20{% else %}bg-white{% endif %}">توقيع</div>
   <div class="rounded-xl p-3 border {% if s == 'active' %}bg-teal text-white border-teal{% else %}bg-white{% endif %}">نشط</div>
   {% endwith %}
 </div>
@@ -87,9 +87,16 @@
       </ul>
       <form method="post" action="{% url 'contracts:upload' contract.pk %}" enctype="multipart/form-data" class="grid md:grid-cols-3 gap-3 items-end">
         {% csrf_token %}
-        <div>{{ attachment_form.kind.label_tag }}{{ attachment_form.kind }}</div>
-        <div>{{ attachment_form.file.label_tag }}{{ attachment_form.file }}</div>
-        <button class="px-4 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-sm">رفع</button>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1" for="{{ attachment_form.kind.id_for_label }}">{{ attachment_form.kind.label }}</label>
+          {{ attachment_form.kind }}
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1" for="{{ attachment_form.file.id_for_label }}">{{ attachment_form.file.label }}</label>
+          {{ attachment_form.file }}
+          {% if attachment_form.file.help_text %}<p class="text-[11px] text-slate-500 mt-1">{{ attachment_form.file.help_text }}</p>{% endif %}
+        </div>
+        <button class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm">رفع</button>
       </form>
     </div>
 
@@ -106,7 +113,7 @@
     </div>
   </div>
 
-  <div class="space-y-6">
+  <div class="space-y-6 order-first lg:order-none">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
       <h2 class="font-bold mb-4">الإجراءات</h2>
       <button type="button" class="js-print-contract w-full text-center py-2.5 rounded-xl border border-slate-200 bg-white font-bold text-sm mb-3 hover:border-teal" data-print-url="{% url 'contracts:print' contract.pk %}?embed=1">طباعة العقد</button>
@@ -121,6 +128,7 @@
       {% if can_legal %}
       <form method="post" action="{% url 'contracts:legal_decide' contract.pk %}" enctype="multipart/form-data" class="space-y-2 mb-3">
         {% csrf_token %}
+        <label class="block text-xs font-bold text-slate-500" for="{{ decision_form.comment.id_for_label }}">{{ decision_form.comment.label }}</label>
         {{ decision_form.comment }}
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1" for="id_legal_file">نسخة المراجعة القانونية</label>
@@ -133,7 +141,7 @@
         </div>
         <div class="grid grid-cols-2 gap-2">
           <button name="decision" value="approve" class="py-2 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">اعتماد قانوني</button>
-          <button name="decision" value="reject" class="py-2 rounded-xl bg-rose-600 text-white font-bold text-sm">إعادة للمسودة</button>
+          <button name="decision" value="reject" class="py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm">إعادة للمسودة</button>
         </div>
       </form>
       {% endif %}
@@ -141,16 +149,18 @@
       <p class="text-xs text-slate-500 mb-2">الخطوة الحالية: {{ pending_step.get_role_display }}</p>
       <form method="post" action="{% url 'contracts:approve' contract.pk %}" class="space-y-2 mb-3">
         {% csrf_token %}
+        <label class="block text-xs font-bold text-slate-500" for="{{ decision_form.comment.id_for_label }}">{{ decision_form.comment.label }}</label>
         {{ decision_form.comment }}
         <div class="grid grid-cols-2 gap-2">
           <button name="decision" value="approve" class="py-2 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">اعتماد</button>
-          <button name="decision" value="reject" class="py-2 rounded-xl bg-rose-600 text-white font-bold text-sm">رفض</button>
+          <button name="decision" value="reject" class="py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm">رفض</button>
         </div>
       </form>
       {% endif %}
       {% if can_escalate %}
       <form method="post" action="{% url 'contracts:escalate' contract.pk %}" class="space-y-2">
         {% csrf_token %}
+        <label class="block text-xs font-bold text-slate-500" for="{{ escalate_form.reason.id_for_label }}">{{ escalate_form.reason.label }}</label>
         {{ escalate_form.reason }}
         <button class="w-full py-2 rounded-xl border font-bold text-sm">تصعيد لإدارة العقود</button>
       </form>

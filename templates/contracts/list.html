@@ -7,13 +7,15 @@
     <h1 class="text-2xl lg:text-3xl font-black">سجل العقود</h1>
     <p class="text-sm text-slate-500 mt-1">المصدر الوحيد للحقيقة — الأرشيف المركزي للالتزامات التعاقدية</p>
   </div>
+  {% if can_manage_contracts %}
   <a href="{% url 'contracts:create' %}" class="px-5 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">+ إنشاء عقد جديد</a>
+  {% endif %}
 </div>
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
   <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-slate-500 mb-1">إجمالي العقود</div><div class="text-2xl font-black text-slate-800">{{ kpi_total }}</div></div>
-  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-green-700 mb-1">سارية ونشطة</div><div class="text-2xl font-black text-green-700">{{ kpi_active }}</div></div>
-  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-yellow-700 mb-1">تتطلب إجراء</div><div class="text-2xl font-black text-yellow-600">{{ kpi_action }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-success mb-1">سارية ونشطة</div><div class="text-2xl font-black text-success">{{ kpi_active }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-warning mb-1">تتطلب إجراء</div><div class="text-2xl font-black text-warning">{{ kpi_action }}</div></div>
   <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-teal-800 mb-1">إجمالي القيمة</div><div class="text-2xl font-black text-teal">{{ kpi_value|floatformat:0|intcomma }}</div></div>
 </div>
 
@@ -27,7 +29,7 @@
     <option value="">كل الأنواع</option>
     {% for key, label in type_choices %}<option value="{{ key }}" {% if selected_type == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
   </select>
-  <button class="rounded-xl bg-navy-850 text-white font-bold text-sm py-2 bg-slate-800">تصفية</button>
+  <button class="rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm py-2">تصفية</button>
 </form>
 
 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -57,26 +59,22 @@
         <td class="p-3"><span class="px-2 py-1 rounded-lg text-[11px] font-bold border {{ c.status|status_chip }}">{{ c.get_status_display }}</span></td>
         <td class="p-3 text-center whitespace-nowrap sticky left-0 bg-white group-hover:bg-slate-50 z-10 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.12)]">
           <div class="inline-flex items-center justify-center gap-1.5">
-            <form method="get" action="{% url 'contracts:detail' c.pk %}" class="inline">
-              <button type="submit" title="عرض" aria-label="عرض" class="w-9 h-9 inline-flex items-center justify-center rounded-xl bg-teal text-white shadow-sm hover:bg-teal-dark">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12Z"/><circle cx="12" cy="12" r="2.25"/></svg>
-              </button>
-            </form>
+            <a href="{% url 'contracts:detail' c.pk %}" title="عرض" aria-label="عرض" class="w-9 h-9 inline-flex items-center justify-center rounded-xl bg-teal text-white shadow-sm hover:bg-teal-dark">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12s-3.75 6.75-9.75 6.75S2.25 12 2.25 12Z"/><circle cx="12" cy="12" r="2.25"/></svg>
+            </a>
             {% if can_manage_contracts and c.status == 'draft' %}
-            <form method="get" action="{% url 'contracts:edit' c.pk %}" class="inline">
-              <button type="submit" title="تعديل" aria-label="تعديل" class="w-9 h-9 inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:border-teal hover:text-teal">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L8.25 18.402l-4.193 1.04 1.04-4.193 12.765-10.762Z"/></svg>
-              </button>
-            </form>
+            <a href="{% url 'contracts:edit' c.pk %}" title="تعديل" aria-label="تعديل" class="w-9 h-9 inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:border-teal hover:text-teal">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L8.25 18.402l-4.193 1.04 1.04-4.193 12.765-10.762Z"/></svg>
+            </a>
             {% endif %}
             {% if can_manage_contracts and c.status != 'expired' and c.status != 'cancelled' %}
             <form method="post" action="{% url 'contracts:delete' c.pk %}" class="js-delete-contract inline"
               data-kind="{% if c.status == 'draft' %}draft{% else %}cancel{% endif %}"
               data-title="{% if c.status == 'draft' %}حذف المسودة؟{% else %}إلغاء العقد؟{% endif %}"
-              data-body="{% if c.status == 'draft' %}ستُحذف مسودة العقد رقم {{ c.pk }} لمورد {{ c.vendor.legal_name }} بشكل نهائي، ولن يمكن استرجاعها.{% else %}سيُلغى العقد رقم {{ c.pk }} لمورد {{ c.vendor.legal_name }} ويبقى السجل موثّقاً في الأرشيف.{% endif %}"
+              data-body="{% if c.status == 'draft' %}ستُحذف مسودة العقد {{ c.contract_number }} لمورد {{ c.vendor.legal_name }} بشكل نهائي، ولن يمكن استرجاعها.{% else %}سيُلغى العقد {{ c.contract_number }} لمورد {{ c.vendor.legal_name }} ويبقى السجل موثّقاً في الأرشيف.{% endif %}"
               data-confirm="{% if c.status == 'draft' %}نعم، احذف المسودة{% else %}نعم، ألغِ العقد{% endif %}">
               {% csrf_token %}
-              <button type="button" title="حذف" aria-label="حذف" class="w-9 h-9 inline-flex items-center justify-center rounded-xl bg-rose-600 text-white shadow-sm hover:bg-rose-700">
+              <button type="button" title="{% if c.status == 'draft' %}حذف المسودة{% else %}إلغاء العقد{% endif %}" aria-label="{% if c.status == 'draft' %}حذف المسودة{% else %}إلغاء العقد{% endif %}" class="w-9 h-9 inline-flex items-center justify-center rounded-xl bg-rose-600 text-white shadow-sm hover:bg-rose-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-7 0 1 12h8l1-12M10 11v6m4-6v6"/></svg>
               </button>
             </form>
@@ -121,27 +119,34 @@
   var bodyEl = document.getElementById("delete-modal-body");
   var confirmBtn = modal.querySelector("[data-delete-confirm]");
   var pendingForm = null;
+  var triggerBtn = null;
 
-  function openModal(form) {
+  function openModal(form, trigger) {
     pendingForm = form;
+    triggerBtn = trigger || null;
     titleEl.textContent = form.getAttribute("data-title") || "تأكيد الإجراء";
     bodyEl.textContent = form.getAttribute("data-body") || "";
     confirmBtn.textContent = form.getAttribute("data-confirm") || "تأكيد";
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("overflow-hidden");
+    confirmBtn.focus();
   }
 
   function closeModal() {
     modal.classList.add("hidden");
     modal.setAttribute("aria-hidden", "true");
     pendingForm = null;
+    document.body.classList.remove("overflow-hidden");
+    if (triggerBtn) triggerBtn.focus();
+    triggerBtn = null;
   }
 
   document.addEventListener("click", function (event) {
     var deleteBtn = event.target.closest("form.js-delete-contract button");
     if (deleteBtn) {
       event.preventDefault();
-      openModal(deleteBtn.closest("form"));
+      openModal(deleteBtn.closest("form"), deleteBtn);
       return;
     }
     if (event.target.closest("[data-delete-cancel]") || event.target.closest("[data-delete-backdrop]")) {

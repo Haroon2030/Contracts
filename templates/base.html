@@ -26,7 +26,10 @@
               700: '#1d4ed8',
               800: '#1e40af'
             },
-            gold: { DEFAULT: '#f59e0b' }
+            gold: { DEFAULT: '#f59e0b' },
+            success: { DEFAULT: '#16a34a' },
+            warning: { DEFAULT: '#eab308' },
+            danger: { DEFAULT: '#dc2626' }
           }
         }
       }
@@ -46,8 +49,8 @@
     body.sidebar-collapsed .sidebar-section,
     body.sidebar-collapsed .sidebar-user-meta,
     body.sidebar-collapsed .sidebar-logout-label { display: none; }
-    body.sidebar-collapsed #app-sidebar nav a { justify-content: center; padding-left: .4rem; padding-right: .4rem; }
-    body.sidebar-collapsed #app-sidebar .sidebar-badge { position: absolute; top: .15rem; left: .15rem; min-width: 1.1rem; text-align: center; }
+    body.sidebar-collapsed #app-sidebar nav a { justify-content: center; padding-inline: .4rem; }
+    body.sidebar-collapsed #app-sidebar .sidebar-badge { position: absolute; top: .15rem; inset-inline-start: .15rem; min-width: 1.1rem; text-align: center; }
     .sidebar-icon { width: 2rem; height: 2rem; border-radius: .75rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .sidebar-icon svg { width: 1.05rem; height: 1.05rem; }
     #sidebar-toggle svg { transition: transform .2s ease; }
@@ -57,7 +60,8 @@
   <script>
     (function () {
       try {
-        if (localStorage.getItem("cms-sidebar-collapsed") === "1") {
+        var stored = localStorage.getItem("cms-sidebar-collapsed");
+        if (stored === "1" || (stored !== "0" && window.matchMedia("(max-width: 767px)").matches)) {
           document.documentElement.classList.add("sidebar-collapsed-pending");
         }
       } catch (e) {}
@@ -81,7 +85,7 @@
         <div class="text-base font-black tracking-tight">إدارة العقود</div>
         <div class="text-[11px] text-slate-400 mt-1">منظومة التعاقدات الداخلية</div>
       </div>
-      <button type="button" id="sidebar-toggle" class="shrink-0 w-9 h-9 rounded-xl bg-gold text-slate-950 hover:bg-amber-400 flex items-center justify-center shadow-sm" aria-controls="app-sidebar" title="طي القائمة">
+      <button type="button" id="sidebar-toggle" class="shrink-0 w-9 h-9 rounded-xl bg-gold text-slate-950 hover:bg-amber-400 flex items-center justify-center shadow-sm" aria-controls="app-sidebar" aria-label="طي القائمة" title="طي القائمة">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M3 12h18"/>
         </svg>
@@ -100,10 +104,12 @@
         </span>
         {% if nav_contract_count %}<span class="sidebar-badge text-[11px] px-2 py-0.5 rounded-md bg-gold/20 text-amber-200 border border-gold/30 font-extrabold">{{ nav_contract_count }}</span>{% endif %}
       </a>
+      {% if can_manage_contracts %}
       <a href="{% url 'contracts:create' %}" title="إنشاء عقد جديد" class="relative flex items-center gap-3 px-3 py-2 rounded-xl {% if nav == 'create' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
         <span class="sidebar-icon bg-emerald-500/20 text-emerald-200"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></span>
         <span class="sidebar-copy">إنشاء عقد جديد</span>
       </a>
+      {% endif %}
       <div class="sidebar-section text-[10px] font-bold text-slate-400 px-3.5 pt-4 pb-1.5">الحوكمة والامتثال</div>
       <a href="{% url 'contracts:approvals' %}" title="قائمة الموافقات" class="relative flex items-center justify-between gap-3 px-3 py-2 rounded-xl {% if nav == 'approvals' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
         <span class="flex items-center gap-3 min-w-0">
@@ -157,7 +163,7 @@
   {% if messages %}
     <div class="mb-5 space-y-2">
       {% for message in messages %}
-        <div class="rounded-xl px-4 py-3 text-sm font-semibold border {% if message.tags == 'error' %}bg-rose-50 text-rose-800 border-rose-200{% else %}bg-teal-light text-teal-dark border-teal/20{% endif %}">{{ message }}</div>
+        <div class="rounded-xl px-4 py-3 text-sm font-semibold border {% if 'error' in message.tags %}bg-rose-50 text-rose-800 border-rose-200{% elif 'warning' in message.tags %}bg-amber-50 text-amber-800 border-amber-200{% else %}bg-teal-light text-teal-dark border-teal/20{% endif %}">{{ message }}</div>
       {% endfor %}
     </div>
   {% endif %}
@@ -167,17 +173,20 @@
 (function () {
   var btn = document.getElementById("sidebar-toggle");
   if (!btn) return;
-  function sync() {
+  function sync(persist) {
     var collapsed = document.body.classList.contains("sidebar-collapsed");
     btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    btn.setAttribute("aria-label", collapsed ? "إظهار القائمة" : "طي القائمة");
     btn.title = collapsed ? "إظهار القائمة" : "طي القائمة";
-    try { localStorage.setItem("cms-sidebar-collapsed", collapsed ? "1" : "0"); } catch (e) {}
+    if (persist) {
+      try { localStorage.setItem("cms-sidebar-collapsed", collapsed ? "1" : "0"); } catch (e) {}
+    }
   }
   btn.addEventListener("click", function () {
     document.body.classList.toggle("sidebar-collapsed");
-    sync();
+    sync(true);
   });
-  sync();
+  sync(false);
 })();
 </script>
 </body>
