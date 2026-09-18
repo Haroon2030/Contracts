@@ -70,3 +70,7 @@ class UserProfile(models.Model):
     @property
     def can_legal_review(self):
         return self.role in {Role.LEGAL, Role.ADMIN}
+
+    @property
+    def can_manage_users(self):
+        return self.role == Role.ADMIN

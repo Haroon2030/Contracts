@@ -13,6 +13,7 @@ urlpatterns = [
     path("login/", RateLimitedLoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", include("dashboard.urls")),
+    path("", include("accounts.urls")),
     path("contracts/", include("contracts.urls")),
 ]
 

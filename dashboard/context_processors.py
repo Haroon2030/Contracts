@@ -17,4 +17,5 @@ def nav_counts(request):
         "nav_open_alerts": ContractAlert.objects.filter(is_open=True).count(),
         "nav_contract_count": Contract.objects.count(),
         "can_manage_contracts": bool(profile and profile.is_contracts_staff),
+        "can_manage_users": bool(profile and profile.can_manage_users),
     }

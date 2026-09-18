@@ -136,6 +136,13 @@
         <span class="sidebar-icon bg-amber-400/20 text-amber-200"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="2"/></svg></span>
         <span class="sidebar-copy">أسعار الأرفف المعيارية</span>
       </a>
+      {% if can_manage_users %}
+      <div class="sidebar-section text-[10px] font-bold text-slate-400 px-3.5 pt-4 pb-1.5">الصلاحيات</div>
+      <a href="{% url 'accounts:user_list' %}" title="المستخدمون والصلاحيات" class="relative flex items-center gap-3 px-3 py-2 rounded-xl {% if nav == 'users' %}bg-teal text-white font-bold shadow-lg{% else %}text-slate-300 hover:bg-white/[0.06] hover:text-white{% endif %}">
+        <span class="sidebar-icon bg-teal/25 text-teal-100"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0-7.5 0M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128A9 9 0 0 0 21 18c0-2.42-1.72-4.48-4.07-4.93M6.786 16.057A7.5 7.5 0 0 1 3 18c0-1.657.985-3.08 2.4-3.72m1.386 1.777A9 9 0 0 1 12 15c1.657 0 3.2.448 4.5 1.228M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM6 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/></svg></span>
+        <span class="sidebar-copy">المستخدمون والصلاحيات</span>
+      </a>
+      {% endif %}
     </nav>
     <div class="p-3 border-t border-white/[0.08]">
       <div class="flex items-center gap-3 mb-3">

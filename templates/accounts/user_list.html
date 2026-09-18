@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}المستخدمون والصلاحيات{% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b mb-6">
+  <div>
+    <h1 class="text-2xl lg:text-3xl font-black">المستخدمون والصلاحيات</h1>
+    <p class="text-sm text-slate-500 mt-1">مسؤولو الإدارات يُضافون كمستخدمين بدور «رئيس قسم المشتريات» مع ربطهم بالقسم المسؤول.</p>
+  </div>
+  <a href="{% url 'accounts:user_create' %}" class="px-5 py-2.5 rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm">+ مستخدم جديد</a>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-slate-500 mb-1">إجمالي المستخدمين</div><div class="text-2xl font-black text-slate-800">{{ kpi_total }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-amber-700 mb-1">مسؤولو الإدارات</div><div class="text-2xl font-black text-amber-700">{{ kpi_heads }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-success mb-1">نشطون</div><div class="text-2xl font-black text-success">{{ kpi_active }}</div></div>
+  <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-slate-500 mb-1">غير نشطين</div><div class="text-2xl font-black text-slate-600">{{ kpi_inactive }}</div></div>
+</div>
+
+<div class="grid lg:grid-cols-3 gap-6 mb-6">
+  <form method="get" class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
+    <input name="q" value="{{ q }}" placeholder="بحث بالاسم أو اسم المستخدم..." class="rounded-xl border-slate-200 text-sm xl:col-span-2">
+    <select name="role" class="rounded-xl border-slate-200 text-sm">
+      <option value="">كل الأدوار</option>
+      {% for key, label in role_choices %}<option value="{{ key }}" {% if selected_role == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <select name="department" class="rounded-xl border-slate-200 text-sm">
+      <option value="">كل الأقسام</option>
+      {% for d in all_departments %}<option value="{{ d.pk }}" {% if selected_department == d.pk|stringformat:"s" %}selected{% endif %}>{{ d.name }}</option>{% endfor %}
+    </select>
+    <div class="flex gap-2">
+      <select name="status" class="rounded-xl border-slate-200 text-sm flex-1">
+        <option value="">كل الحالات</option>
+        <option value="active" {% if selected_status == "active" %}selected{% endif %}>نشط</option>
+        <option value="inactive" {% if selected_status == "inactive" %}selected{% endif %}>غير نشط</option>
+      </select>
+      <button class="rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm px-4">تصفية</button>
+    </div>
+  </form>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+    <h2 class="font-bold text-sm mb-1">الأقسام</h2>
+    <p class="text-[11px] text-slate-500 mb-3">أضف القسم أولاً ثم أنشئ مسؤول الإدارة واربطه به.</p>
+    <ul class="text-sm space-y-1 mb-3 max-h-28 overflow-y-auto">
+      {% for d in all_departments %}
+      <li class="flex items-center justify-between gap-2">
+        <span class="truncate">{{ d.name }}</span>
+        <span class="font-mono text-[11px] text-slate-500">{{ d.code }}</span>
+      </li>
+      {% empty %}
+      <li class="text-slate-500 text-xs">لا أقسام بعد.</li>
+      {% endfor %}
+    </ul>
+    <form method="post" action="{% url 'accounts:department_create' %}" class="grid grid-cols-2 gap-2">
+      {% csrf_token %}
+      <div>
+        <label class="block text-[11px] font-bold text-slate-600 mb-1" for="{{ department_form.name.id_for_label }}">{{ department_form.name.label }}</label>
+        {{ department_form.name }}
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-600 mb-1" for="{{ department_form.code.id_for_label }}">{{ department_form.code.label }}</label>
+        {{ department_form.code }}
+      </div>
+      <button class="col-span-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white font-bold text-xs py-2">إضافة قسم</button>
+    </form>
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+  <div class="overflow-x-auto">
+  <table class="w-full text-sm min-w-[800px]">
+    <thead class="bg-slate-50 text-xs text-slate-500">
+      <tr>
+        <th class="text-right p-3">المستخدم</th>
+        <th class="text-right p-3">الدور</th>
+        <th class="text-right p-3">القسم</th>
+        <th class="text-right p-3">المسمى</th>
+        <th class="text-right p-3">الحالة</th>
+        <th class="text-center p-3 sticky left-0 bg-slate-50 z-10 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.12)]">الإجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr class="border-t hover:bg-slate-50 group">
+        <td class="p-3">
+          <div class="font-bold">{{ u.get_full_name|default:u.username }}</div>
+          <div class="text-[11px] text-slate-500 font-mono">{{ u.username }}</div>
+        </td>
+        <td class="p-3">
+          {% if u.profile %}
+            {% if u.profile.role == "admin" %}
+            <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-teal-light text-teal-dark border-teal/20">{{ u.profile.get_role_display }}</span>
+            {% elif u.profile.role == "purchasing_head" %}
+            <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-amber-50 text-amber-800 border-amber-200">{{ u.profile.get_role_display }}</span>
+            {% elif u.profile.role == "legal" %}
+            <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-indigo-50 text-indigo-700 border-indigo-200">{{ u.profile.get_role_display }}</span>
+            {% elif u.profile.role == "contracts_manager" or u.profile.role == "contracts_officer" %}
+            <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-sky-50 text-sky-800 border-sky-200">{{ u.profile.get_role_display }}</span>
+            {% else %}
+            <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-slate-50 text-slate-700 border-slate-200">{{ u.profile.get_role_display }}</span>
+            {% endif %}
+          {% else %}—{% endif %}
+        </td>
+        <td class="p-3">{% if u.profile and u.profile.department %}{{ u.profile.department.name }}{% else %}—{% endif %}</td>
+        <td class="p-3">{% if u.profile %}{{ u.profile.job_title|default:"—" }}{% else %}—{% endif %}</td>
+        <td class="p-3">
+          {% if u.is_active %}
+          <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-green-50 text-success border-green-200">نشط</span>
+          {% else %}
+          <span class="px-2 py-1 rounded-lg text-[11px] font-bold border bg-slate-100 text-slate-600 border-slate-200">موقوف</span>
+          {% endif %}
+        </td>
+        <td class="p-3 text-center whitespace-nowrap sticky left-0 bg-white group-hover:bg-slate-50 z-10 shadow-[4px_0_8px_-4px_rgba(15,23,42,0.12)]">
+          <a href="{% url 'accounts:user_edit' u.pk %}" title="تعديل" aria-label="تعديل" class="w-9 h-9 inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:border-teal hover:text-teal">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L8.25 18.402l-4.193 1.04 1.04-4.193 12.765-10.762Z"/></svg>
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="p-8 text-center text-slate-500">لا يوجد مستخدمون مطابقون.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}
