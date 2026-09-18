@@ -16,51 +16,51 @@
   <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm"><div class="text-[11px] font-bold text-slate-500 mb-1">غير نشطين</div><div class="text-2xl font-black text-slate-600">{{ kpi_inactive }}</div></div>
 </div>
 
-<div class="grid lg:grid-cols-3 gap-6 mb-6">
-  <form method="get" class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
-    <input name="q" value="{{ q }}" placeholder="بحث بالاسم أو اسم المستخدم..." class="rounded-xl border-slate-200 text-sm xl:col-span-2">
-    <select name="role" class="rounded-xl border-slate-200 text-sm">
-      <option value="">كل الأدوار</option>
-      {% for key, label in role_choices %}<option value="{{ key }}" {% if selected_role == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
-    </select>
-    <select name="department" class="rounded-xl border-slate-200 text-sm">
-      <option value="">كل الأقسام</option>
-      {% for d in all_departments %}<option value="{{ d.pk }}" {% if selected_department == d.pk|stringformat:"s" %}selected{% endif %}>{{ d.name }}</option>{% endfor %}
-    </select>
-    <div class="flex gap-2">
-      <select name="status" class="rounded-xl border-slate-200 text-sm flex-1">
-        <option value="">كل الحالات</option>
-        <option value="active" {% if selected_status == "active" %}selected{% endif %}>نشط</option>
-        <option value="inactive" {% if selected_status == "inactive" %}selected{% endif %}>غير نشط</option>
-      </select>
-      <button class="rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm px-4">تصفية</button>
-    </div>
-  </form>
+<form method="get" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
+  <input name="q" value="{{ q }}" placeholder="بحث بالاسم أو اسم المستخدم..." class="min-w-0 w-full rounded-xl border-slate-200 text-sm">
+  <select name="role" class="min-w-0 w-full rounded-xl border-slate-200 text-sm">
+    <option value="">كل الأدوار</option>
+    {% for key, label in role_choices %}<option value="{{ key }}" {% if selected_role == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+  <select name="department" class="min-w-0 w-full rounded-xl border-slate-200 text-sm">
+    <option value="">كل الأقسام</option>
+    {% for d in all_departments %}<option value="{{ d.pk }}" {% if selected_department == d.pk|stringformat:"s" %}selected{% endif %}>{{ d.name }}</option>{% endfor %}
+  </select>
+  <select name="status" class="min-w-0 w-full rounded-xl border-slate-200 text-sm">
+    <option value="">كل الحالات</option>
+    <option value="active" {% if selected_status == "active" %}selected{% endif %}>نشط</option>
+    <option value="inactive" {% if selected_status == "inactive" %}selected{% endif %}>غير نشط</option>
+  </select>
+  <button class="rounded-xl bg-teal hover:bg-teal-dark text-white font-bold text-sm py-2.5">تصفية</button>
+</form>
 
-  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
-    <h2 class="font-bold text-sm mb-1">الأقسام</h2>
-    <p class="text-[11px] text-slate-500 mb-3">أضف القسم أولاً ثم أنشئ مسؤول الإدارة واربطه به.</p>
-    <ul class="text-sm space-y-1 mb-3 max-h-28 overflow-y-auto">
-      {% for d in all_departments %}
-      <li class="flex items-center justify-between gap-2">
-        <span class="truncate">{{ d.name }}</span>
-        <span class="font-mono text-[11px] text-slate-500">{{ d.code }}</span>
-      </li>
-      {% empty %}
-      <li class="text-slate-500 text-xs">لا أقسام بعد.</li>
-      {% endfor %}
-    </ul>
-    <form method="post" action="{% url 'accounts:department_create' %}" class="grid grid-cols-2 gap-2">
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6">
+  <div class="flex flex-col xl:flex-row xl:items-end gap-4">
+    <div class="min-w-0 flex-1">
+      <h2 class="font-bold text-sm mb-1">الأقسام</h2>
+      <p class="text-[11px] text-slate-500 mb-3">أضف القسم أولاً ثم أنشئ مسؤول الإدارة واربطه به.</p>
+      <ul class="flex flex-wrap gap-2">
+        {% for d in all_departments %}
+        <li class="inline-flex items-center gap-2 max-w-full px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-xs font-bold">
+          <span class="truncate">{{ d.name }}</span>
+          <span class="font-mono text-[11px] text-slate-500 shrink-0">{{ d.code }}</span>
+        </li>
+        {% empty %}
+        <li class="text-slate-500 text-xs">لا أقسام بعد.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <form method="post" action="{% url 'accounts:department_create' %}" class="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_8rem_auto] gap-2 w-full xl:w-auto xl:min-w-[28rem]">
       {% csrf_token %}
-      <div>
+      <div class="min-w-0">
         <label class="block text-[11px] font-bold text-slate-600 mb-1" for="{{ department_form.name.id_for_label }}">{{ department_form.name.label }}</label>
         {{ department_form.name }}
       </div>
-      <div>
+      <div class="min-w-0">
         <label class="block text-[11px] font-bold text-slate-600 mb-1" for="{{ department_form.code.id_for_label }}">{{ department_form.code.label }}</label>
         {{ department_form.code }}
       </div>
-      <button class="col-span-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white font-bold text-xs py-2">إضافة قسم</button>
+      <button class="rounded-xl border border-slate-200 bg-slate-50 hover:bg-white font-bold text-xs px-4 py-2.5 sm:self-end">إضافة قسم</button>
     </form>
   </div>
 </div>
