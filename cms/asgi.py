@@ -11,6 +11,9 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cms.settings')
+if not os.environ.get("DJANGO_SETTINGS_MODULE"):
+    os.environ["DJANGO_SETTINGS_MODULE"] = (
+        "cms.production" if os.environ.get("DJANGO_ENV") == "production" else "cms.settings"
+    )
 
 application = get_asgi_application()
