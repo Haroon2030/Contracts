@@ -71,7 +71,58 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "cms.wsgi.application"
 
-if os.environ.get("POSTGRES_DB"):
+
+def _parse_database_url(url):
+    from urllib.parse import unquote
+
+    scheme, rest = url.split("://", 1)
+    creds, hostpart = rest.rsplit("@", 1)
+    user, password = creds.split(":", 1)
+    hostport, name = hostpart.split("/", 1)
+    name = name.split("?")[0]
+    if ":" in hostport:
+        host, port = hostport.rsplit(":", 1)
+    else:
+        host, port = hostport, ""
+    engine = "django.db.backends.mysql" if scheme.startswith("mysql") else "django.db.backends.postgresql"
+    return {
+        "ENGINE": engine,
+        "NAME": unquote(name),
+        "USER": unquote(user),
+        "PASSWORD": unquote(password),
+        "HOST": host,
+        "PORT": port or ("3306" if engine.endswith("mysql") else "5432"),
+        "CONN_MAX_AGE": 60,
+    }
+
+
+_database_url = os.environ.get("DATABASE_URL", "").strip()
+if os.environ.get("MYSQL_DATABASE") or os.environ.get("MYSQL_HOST"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.environ.get("MYSQL_DATABASE", ""),
+            "USER": os.environ.get("MYSQL_USER", ""),
+            "PASSWORD": os.environ.get("MYSQL_PASSWORD", ""),
+            "HOST": os.environ.get("MYSQL_HOST", "127.0.0.1"),
+            "PORT": os.environ.get("MYSQL_PORT", "3306"),
+            "CONN_MAX_AGE": 60,
+            "OPTIONS": {
+                "charset": "utf8mb4",
+                "init_command": "SET sql_mode='STRICT_TRANS_TABLES', time_zone='+03:00'",
+            },
+        }
+    }
+elif _database_url:
+    DATABASES = {"default": _parse_database_url(_database_url)}
+    if DATABASES["default"]["ENGINE"].endswith("mysql"):
+        DATABASES["default"]["OPTIONS"] = {
+            "charset": "utf8mb4",
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES', time_zone='+03:00'",
+        }
+    else:
+        DATABASES["default"]["OPTIONS"] = {"options": "-c timezone=Asia/Riyadh"}
+elif os.environ.get("POSTGRES_DB"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
